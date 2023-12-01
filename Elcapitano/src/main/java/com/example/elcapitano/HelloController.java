@@ -20,6 +20,13 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
+
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
+
 public class HelloController extends HelloApplication {
 
 /*
@@ -32,6 +39,21 @@ public class HelloController extends HelloApplication {
         imageView.setImage(image);
     }
 */
+
+
+
+
+/*
+    @FXML
+    private ImageView imageView;
+
+    @FXML
+    private void initialize() {
+        Image image = new Image(getClass().getClassLoader().getResourceAsStream("/assets/test_Logo.png"));
+        imageView.setImage(image);
+    }
+*/
+
 
     @FXML
     private Label welcomeText;
@@ -65,17 +87,17 @@ public class HelloController extends HelloApplication {
     /* END OF  PASSWORD FIELDS PART IN LOGIN SCREEN  */
 
 
-
     public Button loginButton;
+
     @FXML
     private void checkPassword() throws IOException {
-        if (passwordField.getText().equals( "123") ) {
+        if (passwordField.getText().equals("123")) {
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("main_page.fxml"));
             fxmlLoader.setControllerFactory(c -> new HelloController());
-            Stage newStage =new Stage();
+            Stage newStage = new Stage();
             Scene scene = new Scene(fxmlLoader.load(), 1920, 800);
             newStage.setTitle("Elcapitano");
-           // newStage.setResizable(false);
+            // newStage.setResizable(false);
             newStage.setScene(scene);
             newStage.setFullScreen(true);
             newStage.show();
@@ -98,6 +120,7 @@ public class HelloController extends HelloApplication {
     private void editMatch() {
         loadPage("editMatch.fxml");
     }
+
     @FXML
     private void incomes() {
         loadPage("incomes.fxml");
@@ -112,13 +135,17 @@ public class HelloController extends HelloApplication {
     private void addBall() {
         loadPage("addBall.fxml");
     }
+
     @FXML
     private void garage() {
         loadPage("garage.fxml");
     }
+
     @FXML
     private void reports() {
-        loadPage("reports.fxml");}
+        loadPage("reports.fxml");
+    }
+
     @FXML
     private void settings() {
         loadPage("settings.fxml");
@@ -138,8 +165,6 @@ public class HelloController extends HelloApplication {
     }
 
 
-
-
-
-
 }
+
+
