@@ -1,2 +1,4 @@
-package com.example.elcapitano;public class Garage {
+package com.example.elcapitano;
+
+public class Garage_controller {
 }

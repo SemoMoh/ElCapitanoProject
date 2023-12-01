@@ -1,2 +1,4 @@
-package com.example.elcapitano;public class Reports {
+package com.example.elcapitano;
+
+public class Reports_controller {
 }
