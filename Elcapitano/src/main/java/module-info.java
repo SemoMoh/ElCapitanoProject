@@ -7,6 +7,7 @@ module com.example.elcapitano {
     requires org.kordamp.ikonli.javafx;
     requires java.desktop;
     requires org.apache.poi.ooxml;
+    requires com.opencsv;
 
     opens com.example.elcapitano to javafx.fxml;
     exports com.example.elcapitano;
