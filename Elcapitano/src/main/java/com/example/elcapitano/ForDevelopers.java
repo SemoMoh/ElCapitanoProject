@@ -2,14 +2,11 @@ package com.example.elcapitano;
 
 import com.elcapitano_system.DevsLogin;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
-import java.io.IOException;
 
 public class ForDevelopers {
 
@@ -20,7 +17,7 @@ public class ForDevelopers {
 
     private String successPathtoDatabase;
 
-    public void confirmDatabase(ActionEvent actionEvent) throws IOException {
+    public void confirmDatabase(ActionEvent actionEvent) {
         DevsLogin d = HelloApplication.d;
         String username, password, path;
 
@@ -34,15 +31,8 @@ public class ForDevelopers {
         if (successLogin) {
             successPathtoDatabase = path;
 
-            // For a successful login, open the accounts log in and continue the app as normal.
-            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
-            fxmlLoader.setControllerFactory(c -> new HelloController());
-            Scene scene = new Scene(fxmlLoader.load(), 600, 400);
-            Stage stage = new Stage();
-            stage.setTitle("Login!");
-            stage.setScene(scene);
-            stage.setResizable(false);
-            stage.show();
+            // Close the stage if login is successful
+            closeStage(actionEvent);
         } else {
             // Show an alert for incorrect credentials
             showAlert("Wrong Developer Credentials", "The provided credentials are incorrect. Please try again.");
@@ -55,5 +45,14 @@ public class ForDevelopers {
         alert.setHeaderText(null);
         alert.setContentText(content);
         alert.showAndWait();
+    }
+
+    private void closeStage(ActionEvent event) {
+        // Get the source Node (Button) and its associated Stage
+        Node source = (Node) event.getSource();
+        Stage stage = (Stage) source.getScene().getWindow();
+
+        // Close the stage
+        stage.close();
     }
 }
