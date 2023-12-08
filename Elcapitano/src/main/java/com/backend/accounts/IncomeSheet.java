@@ -5,18 +5,40 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class IncomeSheet {
     private static final String PATH = "";
     private String fileName;
+    private String kindFile;
+    private List<String> kinds;
     private ArrayList<String> incomes;
     private String date;
     private boolean isClosed = false;
 
 
-    IncomeSheet(String d) {
+    public IncomeSheet(String d) throws IOException {
         fileName = PATH + "Income Sheet " + LocalDateTime.now().getMonth() + ", " + LocalDateTime.now().getYear() + ".csv";
+
+        kindFile = PATH + "kindFile.csv";
+        kinds = new ArrayList<>();
+        File file = new File(kindFile);
+        if (!file.exists()) {
+            file.createNewFile();
+        }
+        FileReader fileReader = new FileReader(file);
+        BufferedReader bufferedReader = new BufferedReader(fileReader);
+        String line;
+
+        while ((line = bufferedReader.readLine()) != null) {
+            String[] parts = line.split(",");
+            for (String part : parts) {
+                kinds.add(part);
+            }
+        }
+
+
         incomes = new ArrayList<>();
         date = d;
     }
@@ -61,13 +83,46 @@ public class IncomeSheet {
         this.isClosed = true;
     }
 
-    public void addIncome(String incomeName, String kind, int cash, String description, String user) throws IOException {
+    public void addIncome(String incomeName, String kind, double cash, String description, String user) throws IOException {
         if (!this.isClosed) {
             this.loadIncomes();
             String income = LocalDate.now() + ","
                     + getTime() + ","
                     + incomeName + ","
                     + kind + ","
+                    + cash + ","
+                    + description + ","
+                    + user;
+            incomes.add(income);
+            write();
+        }
+
+        int flag = 0;
+        for (String k : kinds) {
+            if (k.equals(kind)) {
+                flag = 1;
+                break;
+            }
+        }
+        if (flag == 0) {
+            kinds.add(kind);
+            FileOutputStream fos = new FileOutputStream(kindFile);
+            StringBuilder sb = new StringBuilder();
+            sb.append("ملاعب,");
+            for (int i = 0; i < kinds.size(); i++) {
+                sb.append(kinds.get(i)).append(",");
+            }
+            fos.write(sb.toString().getBytes(StandardCharsets.UTF_8));
+        }
+    }
+
+    public void addReservation(String incomeName, double cash, String description, String user) throws IOException {
+        if (!this.isClosed) {
+            this.loadIncomes();
+            String income = LocalDate.now() + ","
+                    + getTime() + ","
+                    + incomeName + ","
+                    + "ملاعب" + ","
                     + cash + ","
                     + description + ","
                     + user;

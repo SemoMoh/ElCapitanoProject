@@ -1,6 +1,7 @@
 package com.backend.accounts;
 
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -26,7 +27,7 @@ public class Report {
     private int totalIncomeOps;
     private int totalExpensesOps;
 
-    Report(String srcFile, String date, String name) {
+    public Report(String srcFile, String date, String name) {
         report = new XSSFWorkbook();
         this.srcFile = srcFile;
         this.date = date;
@@ -283,33 +284,48 @@ public class Report {
 
     public void createLedgerSheet() throws IOException {
         String[] kinds = readKinds();
-        int rowCount = 2;
-        int totalRowCount = 4;
 
-        Row headerRow = ledgerSheet.createRow(0);
-        CellStyle headerStyle = report.createCellStyle();
-        headerStyle.setFillForegroundColor(IndexedColors.LIGHT_GREEN.getIndex());
-        headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-        Cell[] headerCells = new Cell[7];
-        for (int i = 0; i < headerCells.length; i++) {
-            headerCells[i] = headerRow.createCell(i);
-            headerCells[i].setCellStyle(headerStyle);
-        }
-        headerCells[0].setCellValue("اليوم");
-        headerCells[1].setCellValue("الوقت");
-        headerCells[2].setCellValue("المعاملة");
-        headerCells[3].setCellValue("النوع");
-        headerCells[4].setCellValue("المبلغ");
-        headerCells[5].setCellValue("الوصف");
-        headerCells[6].setCellValue("المستخدم");
+        CellStyle tableNameStyle = report.createCellStyle();
+        tableNameStyle.setFillForegroundColor(IndexedColors.LIGHT_ORANGE.getIndex());
+        tableNameStyle.setFillPattern(FillPatternType.BRICKS);
+        tableNameStyle.setAlignment(HorizontalAlignment.CENTER);
+        tableNameStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+
+        CellStyle sumStyle = report.createCellStyle();
+        sumStyle.setFillForegroundColor(IndexedColors.LIGHT_YELLOW.getIndex());
+        sumStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+        int rowCount = 0;
+        int totalRowCount = 4;
 
 
         for (int i = 0; i < kinds.length; i++) {
             List<String> incomeAccount = readAccount(incomesList, kinds[i]);
             Row tableNameRow = ledgerSheet.createRow(rowCount);
-            Cell cell = tableNameRow.createCell(3);
+            Cell cell = tableNameRow.createCell(0);
             cell.setCellValue(kinds[i] + " إيرادات");
+            cell.setCellStyle(tableNameStyle);
+            ledgerSheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 0, 6));
             rowCount++;
+
+            Row headerRow1 = ledgerSheet.createRow(rowCount);
+            CellStyle headerStyle = report.createCellStyle();
+            headerStyle.setFillForegroundColor(IndexedColors.LIGHT_GREEN.getIndex());
+            headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+            Cell[] headerCells1 = new Cell[7];
+            for (int l = 0; l < headerCells1.length; l++) {
+                headerCells1[l] = headerRow1.createCell(l);
+                headerCells1[l].setCellStyle(headerStyle);
+            }
+            headerCells1[0].setCellValue("اليوم");
+            headerCells1[1].setCellValue("الوقت");
+            headerCells1[2].setCellValue("المعاملة");
+            headerCells1[3].setCellValue("النوع");
+            headerCells1[4].setCellValue("المبلغ");
+            headerCells1[5].setCellValue("الوصف");
+            headerCells1[6].setCellValue("المستخدم");
+            rowCount++;
+
             int incomeInit = rowCount;
             for (int j = 0; j < incomeAccount.size(); j++) {
                 Row row = ledgerSheet.createRow(rowCount);
@@ -331,13 +347,32 @@ public class Report {
             int incomeEnd = rowCount;
             Row sumIncome = ledgerSheet.createRow(rowCount);
             Cell sumCell = sumIncome.createCell(4);
+            sumCell.setCellStyle(sumStyle);
             sumCell.setCellFormula("SUM(E" + incomeInit + ":E" + incomeEnd + ")");
             rowCount += 2;
 
+
             List<String> expenseAccount = readAccount(expensesList, kinds[i]);
             Row row2 = ledgerSheet.createRow(rowCount);
-            Cell cell1 = row2.createCell(3);
+            Cell cell1 = row2.createCell(0);
             cell1.setCellValue(kinds[i] + " مصروفات");
+            cell1.setCellStyle(tableNameStyle);
+            ledgerSheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 0, 6));
+            rowCount++;
+
+            Row headerRow2 = ledgerSheet.createRow(rowCount);
+            Cell[] headerCells2 = new Cell[7];
+            for (int l = 0; l < headerCells2.length; l++) {
+                headerCells2[l] = headerRow2.createCell(l);
+                headerCells2[l].setCellStyle(headerStyle);
+            }
+            headerCells2[0].setCellValue("اليوم");
+            headerCells2[1].setCellValue("الوقت");
+            headerCells2[2].setCellValue("المعاملة");
+            headerCells2[3].setCellValue("النوع");
+            headerCells2[4].setCellValue("المبلغ");
+            headerCells2[5].setCellValue("الوصف");
+            headerCells2[6].setCellValue("المستخدم");
             rowCount++;
 
             int expenseInit = rowCount;
@@ -361,21 +396,28 @@ public class Report {
             int expenseEnd = rowCount;
             Row sumExpense = ledgerSheet.createRow(rowCount);
             Cell sumCell2 = sumExpense.createCell(4);
+            sumCell2.setCellStyle(sumStyle);
             sumCell2.setCellFormula("SUM(E" + expenseInit + ":E" + expenseEnd + ")");
             rowCount += 2;
 
             Row incomeTotal = totalSheet.createRow(totalRowCount);
             totalRowCount++;
             Cell incomeTotalCell = incomeTotal.createCell(0);
+            incomeTotalCell.setCellStyle(headerStyle);
+
             incomeTotalCell.setCellValue("مجموع إيرادات " + kinds[i]);
             Cell incomeTotalValue = incomeTotal.createCell(1);
+            incomeTotalValue.setCellStyle(sumStyle);
             incomeTotalValue.setCellFormula("الجداول!" + "E" + (incomeEnd + 1));
 
             Row expenseTotal = totalSheet.createRow(totalRowCount);
             totalRowCount++;
             Cell expenseTotalCell = expenseTotal.createCell(0);
+            expenseTotalCell.setCellStyle(headerStyle);
+
             expenseTotalCell.setCellValue("مجموع مصروفات " + kinds[i]);
             Cell expenseTotalValue = expenseTotal.createCell(1);
+            expenseTotalValue.setCellStyle(sumStyle);
             expenseTotalValue.setCellFormula("الجداول!" + "E" + (expenseEnd + 1));
             totalRowCount++;
         }
@@ -404,7 +446,6 @@ public class Report {
         createLedgerSheet();
         write();
     }
-
 
     private void write() throws IOException {
         File file = new File(PATH + name + ".xlsx");
