@@ -1,5 +1,7 @@
 package com.backend.accounts;
 
+import com.elcapitano_system.SystemInit;
+
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -8,15 +10,17 @@ public class AccountDB {
     private static final String DB_NAME = "accountDB.csv";
     public static ArrayList<String> accounts;
     private static volatile AccountDB accountDB;
-    private static String dbPath;
+    public static String dbPath;
 
 
     private AccountDB(String d) {
         dbPath = d;
+        accounts = new ArrayList<>();
     }
 
     /**
      * مش عارف عملتها ليه بس كان شكلها فكرة كويسة في الأول
+     *
      * @return
      */
     public static AccountDB getInstance() {
@@ -33,6 +37,7 @@ public class AccountDB {
 
     /**
      * Sets the path to the database
+     *
      * @param path the path to the database file
      */
     public synchronized static void setPath(String path) {
@@ -42,20 +47,24 @@ public class AccountDB {
 
     /**
      * Creates file for database if not already created
+     *
      * @return true if database already exists
-     *         false otherwise
+     * false otherwise
      * @throws IOException
      */
     public static boolean createDB() throws IOException {
         File file = new File(dbPath + DB_NAME);
+        boolean result = false;
         if (!file.exists()) {
-            return file.createNewFile();
+            result = file.createNewFile();
         }
-        return false;
+        addAccount("Admin", "admin", "admin", "", "");
+        return result;
     }
 
     /**
      * Loads the accounts from the database to accounts list
+     *
      * @return accounts loaded
      * @throws IOException
      */
@@ -73,11 +82,12 @@ public class AccountDB {
 
     /**
      * Adds a new account to the list of accounts and modifies the database
-     * @param accountName   The name of the account
-     * @param password      The password of the account
-     * @param accountType   The type of account
-     * @param jobTitle      The title of the job of the account
-     * @param mobile        The mobile number of the account
+     *
+     * @param accountName The name of the account
+     * @param password    The password of the account
+     * @param accountType The type of account
+     * @param jobTitle    The title of the job of the account
+     * @param mobile      The mobile number of the account
      * @throws IOException
      */
 
@@ -92,6 +102,7 @@ public class AccountDB {
 
     /**
      * Find the account by username
+     *
      * @param username the username to search
      * @return index of the account in the database if found and -1 if not found
      */
@@ -108,9 +119,10 @@ public class AccountDB {
 
     /**
      * Removes an account from the database & list of accounts
+     *
      * @param accountName the name of the account
      * @return true if the account was removed
-     *         & false otherwise
+     * & false otherwise
      * @throws IOException
      */
     public static boolean removeAccount(String accountName) throws IOException {
@@ -125,11 +137,12 @@ public class AccountDB {
 
     /**
      * Modifies an existing account in the database
-     * @param username the username to find the account
-     * @param index   the cell index you want to modify
+     *
+     * @param username     the username to find the account
+     * @param index        the cell index you want to modify
      * @param modification the new modification
      * @return true if successfully modified the account
-     *         & false otherwise
+     * & false otherwise
      * @throws IOException
      */
     public static boolean modify(String username, int index, String modification) throws IOException {
@@ -177,4 +190,9 @@ public class AccountDB {
         fos.write("".getBytes(StandardCharsets.UTF_8));
     }
 
+    public static void main(String[] args) throws IOException {
+        dbPath = "D:/Files/Projects/" + SystemInit.DB_name;
+        AccountDB a = AccountDB.getInstance();
+        createDB();
+    }
 }
