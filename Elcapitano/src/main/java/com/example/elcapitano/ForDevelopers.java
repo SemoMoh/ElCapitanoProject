@@ -1,6 +1,7 @@
 package com.example.elcapitano;
 
 import com.elcapitano_system.DevsLogin;
+import com.elcapitano_system.SystemInit;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
@@ -17,7 +18,7 @@ public class ForDevelopers {
 
     private String successPathtoDatabase;
 
-    public void confirmDatabase(ActionEvent actionEvent) {
+    public void confirmDatabase(ActionEvent actionEvent) throws Exception {
         DevsLogin d = HelloApplication.d;
         String username, password, path;
 
@@ -30,9 +31,19 @@ public class ForDevelopers {
 
         if (successLogin) {
             successPathtoDatabase = path;
+            HelloApplication.DB_path = path;
+            //initialize database.
+            SystemInit.initializeDB();
 
             // Close the stage if login is successful
             closeStage(actionEvent);
+            Stage stage = new Stage();
+
+
+            //open the account page.
+            HelloApplication.app.start(stage);
+
+
         } else {
             // Show an alert for incorrect credentials
             showAlert("Wrong Developer Credentials", "The provided credentials are incorrect. Please try again.");

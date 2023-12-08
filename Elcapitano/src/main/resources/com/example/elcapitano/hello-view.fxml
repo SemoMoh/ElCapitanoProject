@@ -33,7 +33,7 @@
 
         <GridPane alignment="CENTER" prefHeight="139.0" prefWidth="456.0">
             <children>
-                <TextField prefHeight="26.0" prefWidth="90.0" promptText="Enter Username" GridPane.columnSpan="2">
+                <TextField fx:id="usernameField" prefHeight="26.0" prefWidth="90.0" promptText="Enter Username" GridPane.columnSpan="2">
                     <GridPane.margin>
                         <Insets bottom="10.0" top="10.0" />
                     </GridPane.margin>

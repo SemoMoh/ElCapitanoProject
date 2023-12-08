@@ -3,10 +3,7 @@ package com.example.elcapitano;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
@@ -28,6 +25,7 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 public class HelloController extends HelloApplication {
+    public TextField usernameField;
 
 /*
     @FXML
@@ -91,6 +89,9 @@ public class HelloController extends HelloApplication {
 
     @FXML
     private void checkPassword() throws IOException {
+        String username = usernameField.getText();
+        String password = passwordField.getText();
+
         if (passwordField.getText().equals("123")) {
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("main_page.fxml"));
             fxmlLoader.setControllerFactory(c -> new HelloController());
