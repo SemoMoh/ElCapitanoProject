@@ -1,9 +1,15 @@
 package com.example.elcapitano;
 
 import javafx.event.ActionEvent;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 
 public class ForDevelopers {
-    
+
+    public TextField devusername;
+    public TextField devPassword;
+    public TextField pathtoDatabase;
+    public Button confirmDatabase;
     private String pathtoDatabse;
     
     
