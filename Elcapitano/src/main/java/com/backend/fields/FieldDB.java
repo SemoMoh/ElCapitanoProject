@@ -21,8 +21,7 @@ import java.util.Scanner;
  */
 public class FieldDB {
     private static FieldDB DB;
-    // TODO: change the path variables, and look for them in the constructors.
-    private final String pathBeforeAbs = "D:/Files/Projects/Database/Fields/";
+    public static String pathBeforeAbs;
     /*
      * example: File located at ".../Database/Fields/No.1/11-2023.csv"
      * pathBeforeAbs: ".../Database/Fields/"

@@ -161,7 +161,8 @@ public class Field9x9 extends Field {
             throw new RuntimeException(e);
         }
         System.out.println(f.table);
-
-
+    }
+    public List<Field5x5> getSmallFields(){
+        return this.smallFields;
     }
 }

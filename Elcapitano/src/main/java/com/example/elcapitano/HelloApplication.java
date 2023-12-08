@@ -12,7 +12,7 @@ import java.io.IOException;
 
 public class HelloApplication extends Application {
     public static DevsLogin d;
-    public static String DB_path; // with the end backslash
+    public static String DB_path; // from device root till "Capitano Database/"
     public static ElcapitanoSystem system;
     public static Application app;
 
