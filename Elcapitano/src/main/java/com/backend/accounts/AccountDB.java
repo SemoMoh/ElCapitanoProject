@@ -202,5 +202,7 @@ public class AccountDB {
         FileOutputStream fos = new FileOutputStream(file);
         fos.write("".getBytes(StandardCharsets.UTF_8));
     }
-
+    public static boolean checkAccount(String username, String password) {
+        return true;
+    }
 }
