@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.MenuButton?>
-<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -30,20 +32,35 @@
             <TextField alignment="CENTER" layoutX="71.0" layoutY="247.0" AnchorPane.rightAnchor="500.0" />
             <HBox alignment="CENTER" layoutY="56.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="650.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                <children>
-                  <DatePicker promptText="اختار اليوم               " />
-                  <MenuButton mnemonicParsing="false" prefWidth="98.0" text="اختار الملعب">
-                    <items>
-                      <MenuItem mnemonicParsing="false" text="ملعب 1" />
-                      <MenuItem mnemonicParsing="false" text="ملعب 2" />
-                        <MenuItem mnemonicParsing="false" text="ملعب 4-1" />
-                        <MenuItem mnemonicParsing="false" text="ملعب 4-2" />
-                        <MenuItem mnemonicParsing="false" text="ملعب 4-3" />
-                        <MenuItem mnemonicParsing="false" text="ملعب 4" />
-                    </items>
+                  <Button fx:id="searchButton" mnemonicParsing="false" onAction="#searchReservations" text="بحث">
+                     <HBox.margin>
+                        <Insets right="27.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Button>
+                  <DatePicker fx:id="chooseDate" prefHeight="35.0" prefWidth="186.0" promptText="اختار اليوم               " />
+                  <ChoiceBox fx:id="choosePitch" prefHeight="37.0" prefWidth="130.0">
+                     <items>
+                        <FXCollections fx:factory="observableArrayList">
+                           <String fx:value="ملعب 1" />
+                           <String fx:value="ملعب 2-1" />
+                           <String fx:value="ملعب 2-2" />
+                           <String fx:value="ملعب 2-3" />
+                           <String fx:value="ملعب 2 9x9" />
+                        </FXCollections>
+                     </items>
                      <HBox.margin>
                         <Insets left="50.0" />
                      </HBox.margin>
-                  </MenuButton>
+                  </ChoiceBox>
+                  <Label text="اختار ملعب:   ">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Label>
+
                </children>
                <opaqueInsets>
                   <Insets />
@@ -75,55 +92,61 @@
             <Button layoutX="428.0" layoutY="554.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="11:00 -- 12:00" AnchorPane.rightAnchor="170.39999999999998" />
             <HBox alignment="CENTER" layoutX="1.0" layoutY="633.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="650.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
             <TextField alignment="CENTER" layoutX="71.0" layoutY="301.0" AnchorPane.rightAnchor="500.0" />
-            <TextField alignment="CENTER" editable="false" layoutX="71.0" layoutY="361.0" AnchorPane.rightAnchor="500.0" />
-            <Label layoutX="265.0" layoutY="195.0" text="الاسم" AnchorPane.rightAnchor="400.0">
+            <TextField alignment="CENTER" editable="false" layoutX="550.4" layoutY="361.0" AnchorPane.rightAnchor="500.0" />
+            <Label layoutX="762.0" layoutY="191.0" text="الاسم" AnchorPane.rightAnchor="401.20000000000005">
                <font>
-                  <Font name="System Bold" size="12.0" />
+                  <Font name="System Bold" size="16.0" />
                </font>
             </Label>
-            <Label layoutX="264.0" layoutY="247.0" text="رقم الموبيل" AnchorPane.rightAnchor="400.0">
+            <Label layoutX="732.0" layoutY="247.0" text="رقم الموبيل" AnchorPane.rightAnchor="392.0">
                <font>
-                  <Font name="System Bold" size="12.0" />
+                  <Font name="System Bold" size="16.0" />
                </font>
             </Label>
-            <Label layoutX="265.0" layoutY="305.0" text="المبلغ المدفوع" AnchorPane.rightAnchor="400.0">
+            <Label layoutX="714.0" layoutY="301.0" text="المبلغ المدفوع" AnchorPane.rightAnchor="390.0">
                <font>
-                  <Font name="System Bold" size="12.0" />
+                  <Font name="System Bold" size="16.0" />
                </font>
             </Label>
-            <Label layoutX="265.0" layoutY="365.0" text="المبلغ المتبقي" AnchorPane.rightAnchor="400.0">
+            <Label layoutX="714.0" layoutY="361.0" text="المبلغ المتبقي" AnchorPane.rightAnchor="391.6">
                <font>
-                  <Font name="System Bold" size="12.0" />
+                  <Font name="System Bold" size="16.0" />
                </font>
             </Label>
-            <CheckBox layoutX="306.0" layoutY="365.0" mnemonicParsing="false" text="اضف خصم" AnchorPane.rightAnchor="678.8">
+            <CheckBox layoutX="416.0" layoutY="416.0" mnemonicParsing="false" text="اضف خصم" AnchorPane.rightAnchor="678.4">
                <font>
-                  <Font name="System Bold" size="12.0" />
+                  <Font name="System Bold" size="16.0" />
                </font>
             </CheckBox>
-            <Label layoutX="224.0" layoutY="194.0" text="عدد الساعات" AnchorPane.rightAnchor="765.6">
+            <Label layoutX="351.0" layoutY="195.0" text="عدد الساعات" AnchorPane.rightAnchor="764.2">
                <font>
-                  <Font name="System Bold" size="14.0" />
+                  <Font name="System Bold" size="16.0" />
                </font>
             </Label>
-            <TextField editable="false" layoutX="165.0" layoutY="191.0" prefHeight="26.0" prefWidth="41.0" AnchorPane.rightAnchor="857.4" />
-            <Label layoutX="228.0" layoutY="254.0" text="قيمة الساعة" AnchorPane.rightAnchor="766.4">
+            <Label layoutX="354.0" layoutY="251.0" text="قيمة الساعة" AnchorPane.rightAnchor="766.0">
                <font>
-                  <Font name="System Bold" size="14.0" />
+                  <Font name="System Bold" size="16.0" />
                </font>
             </Label>
-            <TextField editable="false" layoutX="165.0" layoutY="251.0" prefHeight="26.0" prefWidth="41.0" AnchorPane.rightAnchor="857.6" />
+            <TextField alignment="CENTER" editable="false" layoutX="165.0" layoutY="251.0" prefHeight="26.0" prefWidth="59.0" AnchorPane.rightAnchor="858.0" />
             <TextArea layoutX="14.0" layoutY="223.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="200.0" prefWidth="200.0" promptText="ملاحظات" AnchorPane.rightAnchor="986.0" />
             <Label layoutX="69.0" layoutY="194.0" text="اضف ملاحظات" AnchorPane.rightAnchor="1042.2">
                <font>
-                  <Font name="System Bold" size="14.0" />
+                  <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <Button layoutX="442.0" layoutY="606.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="119.0" styleClass="button-15" stylesheets="@addMatch_style.css" text="تأكيج الحجز" AnchorPane.rightAnchor="638.8">
+            <Button layoutX="442.0" layoutY="606.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="119.0" styleClass="button-15" stylesheets="@addMatch_style.css" text="تأكيد الحجز" AnchorPane.rightAnchor="638.8">
                <font>
-                  <Font name="System Bold" size="12.0" />
+                  <Font name="System Bold" size="16.0" />
                </font>
             </Button>
+            <TextField alignment="CENTER" layoutX="550.0" layoutY="416.0" AnchorPane.rightAnchor="500.4" />
+            <Label layoutX="714.0" layoutY="416.0" text="المبلغ الاجمالي" AnchorPane.rightAnchor="387.6">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+            <Spinner fx:id="noOfHours" layoutX="282.0" layoutY="197.0" prefHeight="26.0" prefWidth="59.0" AnchorPane.rightAnchor="858.8" />
          </children>
       </AnchorPane>
    </children>

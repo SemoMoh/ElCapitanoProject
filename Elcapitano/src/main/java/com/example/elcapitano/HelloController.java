@@ -1,5 +1,7 @@
 package com.example.elcapitano;
 
+import com.backend.accounts.AccountDB;
+import com.feedback_windows.errorScreen;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -91,8 +93,8 @@ public class HelloController extends HelloApplication {
     private void checkPassword() throws IOException {
         String username = usernameField.getText();
         String password = passwordField.getText();
-
-        if (passwordField.getText().equals("123")) {
+        boolean correctAccount = AccountDB.checkAccount(username,password);
+        if (correctAccount) {
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("main_page.fxml"));
             fxmlLoader.setControllerFactory(c -> new HelloController());
             Stage newStage = new Stage();
@@ -106,6 +108,10 @@ public class HelloController extends HelloApplication {
             // Close the current login stage
             Stage currentStage = (Stage) loginButton.getScene().getWindow();
             currentStage.close();
+        }
+        else {
+
+            new errorScreen().showAlert("Invalid Login","Invalid username or password");
         }
     }
 

@@ -52,6 +52,9 @@ public class AccountDB {
      * false otherwise
      * @throws IOException
      */
+
+
+    //TODO: create a default account , with admin in password and username and password
     public static boolean createDB() throws IOException {
         File file = new File(dbPath + DB_NAME);
         boolean result = false;
@@ -194,5 +197,10 @@ public class AccountDB {
         dbPath = "D:/Files/Projects/" + SystemInit.DB_name;
         AccountDB a = AccountDB.getInstance();
         createDB();
+    }
+
+    /*TODO: Check the entered account in the dataBase or not, in the login screen */
+    public static boolean checkAccount(String username, String password) {
+        return true;
     }
 }

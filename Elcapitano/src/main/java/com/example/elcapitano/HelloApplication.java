@@ -36,7 +36,7 @@ public class HelloApplication extends Application {
             DB_path = DevsLogin.pathToDB + SystemInit.DB_name + "/";
 
             //System initialization.
-            system = new ElcapitanoSystem();
+            ElcapitanoSystem.SystemLoad();
 
             /* this.newStage =stage;*/
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));

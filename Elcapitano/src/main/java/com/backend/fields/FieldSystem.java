@@ -29,6 +29,7 @@ public class FieldSystem {
         }
     }
 
+    //TODO: handle the case of No.4  which is ملعب 3-2
     private Field getField(String fieldName) {
         if (fieldName.equals("No.1")) {
             return this.smallField;
