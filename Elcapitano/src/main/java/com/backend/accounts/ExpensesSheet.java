@@ -5,17 +5,35 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ExpensesSheet {
     private static final String PATH = "";
     private String fileName;
+    private String kindFile;
+    private List<String> kinds;
     private ArrayList<String> expenses;
     private String date;
     private boolean isClosed = false;
 
 
-    ExpensesSheet(String d) {
+    public ExpensesSheet(String d) throws IOException {
         fileName = PATH + "Expenses Sheet " + LocalDateTime.now().getMonth() + ", " + LocalDateTime.now().getYear() + ".csv";
+        kindFile = PATH + "kindFile.csv";
+
+        kinds = new ArrayList<>();
+        File file = new File(kindFile);
+        if (!file.exists()) {
+            file.createNewFile();
+        }
+        FileReader fileReader = new FileReader(file);
+        BufferedReader bufferedReader = new BufferedReader(fileReader);
+        String line = bufferedReader.readLine();
+        String[] parts = line.split(",");
+        for (String part : parts) {
+            kinds.add(part);
+        }
+
         expenses = new ArrayList<>();
         date = d;
     }
@@ -72,6 +90,23 @@ public class ExpensesSheet {
                     + user;
             expenses.add(expense);
             write();
+        }
+
+        int flag = 0;
+        for (String k : kinds) {
+            if (k.equals(kind)) {
+                flag = 1;
+                break;
+            }
+        }
+        if (flag == 0) {
+            kinds.add(kind);
+            FileOutputStream fos = new FileOutputStream(kindFile);
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < kinds.size(); i++) {
+                sb.append(kinds.get(i)).append(",");
+            }
+            fos.write(sb.toString().getBytes(StandardCharsets.UTF_8));
         }
     }
 
