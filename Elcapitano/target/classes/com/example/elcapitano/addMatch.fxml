@@ -28,20 +28,12 @@
                   <Insets right="30.0" top="10.0" />
                </padding>
             </Label>
-            <TextField alignment="CENTER" layoutX="71.0" layoutY="191.0" AnchorPane.rightAnchor="500.0" />
-            <TextField alignment="CENTER" layoutX="71.0" layoutY="247.0" AnchorPane.rightAnchor="500.0" />
+            <TextField fx:id="nameField" alignment="CENTER" layoutX="71.0" layoutY="191.0" AnchorPane.rightAnchor="500.0" />
+            <TextField fx:id="phoneField" alignment="CENTER" layoutX="71.0" layoutY="247.0" AnchorPane.rightAnchor="500.0" />
             <HBox alignment="CENTER" layoutY="56.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="650.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                <children>
-                  <Button fx:id="searchButton" mnemonicParsing="false" onAction="#searchReservations" text="بحث">
-                     <HBox.margin>
-                        <Insets right="27.0" />
-                     </HBox.margin>
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </Button>
-                  <DatePicker fx:id="chooseDate" prefHeight="35.0" prefWidth="186.0" promptText="اختار اليوم               " />
-                  <ChoiceBox fx:id="choosePitch" prefHeight="37.0" prefWidth="130.0">
+                  <DatePicker fx:id="chooseDate" onHiding="#searchReservations" prefHeight="35.0" prefWidth="186.0" promptText="اختار اليوم               " />
+                  <ChoiceBox fx:id="choosePitch" onMouseReleased="#searchReservations" prefHeight="37.0" prefWidth="130.0">
                      <items>
                         <FXCollections fx:factory="observableArrayList">
                            <String fx:value="ملعب 1" />
@@ -66,32 +58,32 @@
                   <Insets />
                </opaqueInsets>
             </HBox>
-            <Button layoutX="538.0" layoutY="178.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="00:00 -- 01:00" AnchorPane.rightAnchor="60.39999999999998" />
-            <Button layoutX="538.0" layoutY="210.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="00:00 -- 02:00" AnchorPane.rightAnchor="60.39999999999998" />
-            <Button layoutX="538.0" layoutY="243.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="02:00 -- 03:00" AnchorPane.rightAnchor="60.39999999999998" />
-            <Button layoutX="538.0" layoutY="277.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="03:00 -- 04:00" AnchorPane.rightAnchor="60.39999999999998" />
-            <Button layoutX="538.0" layoutY="314.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="04:00 -- 05:00" AnchorPane.rightAnchor="60.39999999999998" />
-            <Button layoutX="538.0" layoutY="348.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="05:00 -- 06:00" AnchorPane.rightAnchor="60.39999999999998" />
-            <Button layoutX="538.0" layoutY="384.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="06:00 -- 07:00" AnchorPane.rightAnchor="60.39999999999998" />
-            <Button layoutX="538.0" layoutY="416.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="07:00 -- 08:00" AnchorPane.rightAnchor="60.39999999999998" />
-            <Button layoutX="538.0" layoutY="449.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="08:00 -- 09:00" AnchorPane.rightAnchor="60.39999999999998" />
-            <Button layoutX="538.0" layoutY="483.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="09:00 -- 10:00" AnchorPane.rightAnchor="60.39999999999998" />
-            <Button layoutX="538.0" layoutY="520.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="10:00 -- 11:00" AnchorPane.rightAnchor="60.39999999999998" />
-            <Button layoutX="538.0" layoutY="554.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="11:00 -- 12:00" AnchorPane.rightAnchor="60.39999999999998" />
-            <Button layoutX="428.0" layoutY="178.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="12:00 -- 02:00" AnchorPane.rightAnchor="170.39999999999998" />
-            <Button layoutX="428.0" layoutY="210.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="01:00 -- 02:00" AnchorPane.rightAnchor="170.39999999999998" />
-            <Button layoutX="428.0" layoutY="243.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="02:00 -- 02:00" AnchorPane.rightAnchor="170.39999999999998" />
-            <Button layoutX="428.0" layoutY="277.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="03:00 -- 02:00" AnchorPane.rightAnchor="170.39999999999998" />
-            <Button layoutX="428.0" layoutY="314.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="04:00 -- 02:00" AnchorPane.rightAnchor="170.39999999999998" />
-            <Button layoutX="428.0" layoutY="348.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="05:00 -- 02:00" AnchorPane.rightAnchor="170.39999999999998" />
-            <Button layoutX="428.0" layoutY="384.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="06:00 -- 02:00" AnchorPane.rightAnchor="170.39999999999998" />
-            <Button layoutX="428.0" layoutY="416.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="07:00 -- 02:00" AnchorPane.rightAnchor="170.39999999999998" />
-            <Button layoutX="428.0" layoutY="449.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="08:00 -- 02:00" AnchorPane.rightAnchor="170.39999999999998" />
-            <Button layoutX="428.0" layoutY="483.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="09:00 -- 02:00" AnchorPane.rightAnchor="170.39999999999998" />
-            <Button layoutX="428.0" layoutY="520.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="10:00 -- 02:00" AnchorPane.rightAnchor="170.39999999999998" />
-            <Button layoutX="428.0" layoutY="554.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="11:00 -- 12:00" AnchorPane.rightAnchor="170.39999999999998" />
+            <Button fx:id="button00" layoutX="538.0" layoutY="178.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="00:00 -- 01:00" AnchorPane.rightAnchor="60.39999999999998" />
+            <Button fx:id="button01" layoutX="538.0" layoutY="210.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="01:00 -- 02:00" AnchorPane.rightAnchor="60.39999999999998" />
+            <Button fx:id="button02" layoutX="538.0" layoutY="243.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="02:00 -- 03:00" AnchorPane.rightAnchor="60.39999999999998" />
+            <Button fx:id="button03" layoutX="538.0" layoutY="277.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="03:00 -- 04:00" AnchorPane.rightAnchor="60.39999999999998" />
+            <Button fx:id="button04" layoutX="538.0" layoutY="314.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="04:00 -- 05:00" AnchorPane.rightAnchor="60.39999999999998" />
+            <Button fx:id="button05" layoutX="538.0" layoutY="348.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="05:00 -- 06:00" AnchorPane.rightAnchor="60.39999999999998" />
+            <Button fx:id="button06" layoutX="538.0" layoutY="384.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="06:00 -- 07:00" AnchorPane.rightAnchor="60.39999999999998" />
+            <Button fx:id="button07" layoutX="538.0" layoutY="416.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="07:00 -- 08:00" AnchorPane.rightAnchor="60.39999999999998" />
+            <Button fx:id="button08" layoutX="538.0" layoutY="449.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="08:00 -- 09:00" AnchorPane.rightAnchor="60.39999999999998" />
+            <Button fx:id="button09" layoutX="538.0" layoutY="483.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="09:00 -- 10:00" AnchorPane.rightAnchor="60.39999999999998" />
+            <Button fx:id="button10" layoutX="538.0" layoutY="520.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="10:00 -- 11:00" AnchorPane.rightAnchor="60.39999999999998" />
+            <Button fx:id="button11" layoutX="538.0" layoutY="554.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="11:00 -- 12:00" AnchorPane.rightAnchor="60.39999999999998" />
+            <Button fx:id="button12" layoutX="428.0" layoutY="178.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="12:00 -- 01:00" AnchorPane.rightAnchor="170.39999999999998" />
+            <Button fx:id="button13" layoutX="428.0" layoutY="210.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="01:00 -- 02:00" AnchorPane.rightAnchor="170.39999999999998" />
+            <Button fx:id="button14" layoutX="428.0" layoutY="243.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="02:00 -- 03:00" AnchorPane.rightAnchor="170.39999999999998" />
+            <Button fx:id="button15" layoutX="428.0" layoutY="277.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="03:00 -- 04:00" AnchorPane.rightAnchor="170.39999999999998" />
+            <Button fx:id="button16" layoutX="428.0" layoutY="314.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="04:00 -- 05:00" AnchorPane.rightAnchor="170.39999999999998" />
+            <Button fx:id="button17" layoutX="428.0" layoutY="348.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="05:00 -- 06:00" AnchorPane.rightAnchor="170.39999999999998" />
+            <Button fx:id="button18" layoutX="428.0" layoutY="384.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="06:00 -- 07:00" AnchorPane.rightAnchor="170.39999999999998" />
+            <Button fx:id="button19" layoutX="428.0" layoutY="416.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="07:00 -- 08:00" AnchorPane.rightAnchor="170.39999999999998" />
+            <Button fx:id="button20" layoutX="428.0" layoutY="449.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="08:00 -- 09:00" AnchorPane.rightAnchor="170.39999999999998" />
+            <Button fx:id="button21" layoutX="428.0" layoutY="483.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="09:00 -- 10:00" AnchorPane.rightAnchor="170.39999999999998" />
+            <Button fx:id="button22" layoutX="428.0" layoutY="520.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="10:00 -- 11:00" AnchorPane.rightAnchor="170.39999999999998" />
+            <Button fx:id="button23" layoutX="428.0" layoutY="554.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="11:00 -- 12:00" AnchorPane.rightAnchor="170.39999999999998" />
             <HBox alignment="CENTER" layoutX="1.0" layoutY="633.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="650.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-            <TextField alignment="CENTER" layoutX="71.0" layoutY="301.0" AnchorPane.rightAnchor="500.0" />
+            <TextField fx:id="piadAmount" alignment="CENTER" layoutX="71.0" layoutY="301.0" AnchorPane.rightAnchor="500.0" />
             <TextField alignment="CENTER" editable="false" layoutX="550.4" layoutY="361.0" AnchorPane.rightAnchor="500.0" />
             <Label layoutX="762.0" layoutY="191.0" text="الاسم" AnchorPane.rightAnchor="401.20000000000005">
                <font>
@@ -129,13 +121,13 @@
                </font>
             </Label>
             <TextField alignment="CENTER" editable="false" layoutX="165.0" layoutY="251.0" prefHeight="26.0" prefWidth="59.0" AnchorPane.rightAnchor="858.0" />
-            <TextArea layoutX="14.0" layoutY="223.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="200.0" prefWidth="200.0" promptText="ملاحظات" AnchorPane.rightAnchor="986.0" />
+            <TextArea fx:id="detailsField" layoutX="14.0" layoutY="223.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="200.0" prefWidth="200.0" promptText="ملاحظات" AnchorPane.rightAnchor="986.0" />
             <Label layoutX="69.0" layoutY="194.0" text="اضف ملاحظات" AnchorPane.rightAnchor="1042.2">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <Button layoutX="442.0" layoutY="606.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="119.0" styleClass="button-15" stylesheets="@addMatch_style.css" text="تأكيد الحجز" AnchorPane.rightAnchor="638.8">
+            <Button fx:id="confirmReservation" layoutX="442.0" layoutY="606.0" mnemonicParsing="false" onAction="#confitmResetvations" prefHeight="26.0" prefWidth="119.0" styleClass="button-15" stylesheets="@addMatch_style.css" text="تأكيد الحجز" AnchorPane.rightAnchor="638.8">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>

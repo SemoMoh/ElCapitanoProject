@@ -44,7 +44,7 @@ public class FieldSystem {
         if (fieldName.equals("No.3")) {
             return smallFields.get(1);
         }
-        return smallFields.get(3);
+        return smallFields.get(2);
     }
 
     /**
@@ -94,4 +94,8 @@ public class FieldSystem {
     }
 
 
+    public static int getNoOfHoursOfRelatedReservation(String date, int day, String fieldName , int hour){
+
+        return 1;
+    }
 }
