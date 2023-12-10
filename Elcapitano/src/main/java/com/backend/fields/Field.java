@@ -88,7 +88,7 @@ public abstract class Field {
      * - First part: A string that holds the day number.
      * - Second part: A string that holds the date in the format "MM-yyyy".
      */
-    protected String[] nextDayDate(String date, int day, int shift) {
+    public static String[] nextDayDate(String date, int day, int shift) {
         //To know the date of the next date.
         String[] parts = date.split("-");
         int month = Integer.parseInt(parts[0]);
@@ -159,7 +159,7 @@ public abstract class Field {
                 if (time < 0) {
                     time = 23;
                     //get the next day date and number.
-                    String[] parts = this.nextDayDate(date, day, -1);
+                    String[] parts = nextDayDate(date, day, -1);
                     date = parts[1];
                     day = Integer.parseInt(parts[0]);
                     // to update the table.
@@ -211,7 +211,7 @@ public abstract class Field {
             time++;
             if (time == 24) {
                 time = 0;
-                parts = this.nextDayDate(date, day, 1);
+                parts = nextDayDate(date, day, 1);
                 date = parts[1];
                 day = Integer.parseInt(parts[0]);
             }
@@ -293,7 +293,7 @@ public abstract class Field {
             while (counter != oldNoOfHours) {
                 if (time == 24) {
                     time = 0;
-                    parts = this.nextDayDate(date, day, 1);
+                    parts = nextDayDate(date, day, 1);
                     day = Integer.parseInt(parts[0]);
                     date = parts[1];
                 }
@@ -315,7 +315,7 @@ public abstract class Field {
             while (counter != noOfHours) {
                 if (time == 24) {
                     time = 0;
-                    parts = this.nextDayDate(date, day, 1);
+                    parts = nextDayDate(date, day, 1);
                     day = Integer.parseInt(parts[0]);
                     date = parts[1];
                 }

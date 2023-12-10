@@ -1,5 +1,6 @@
 package com.example.elcapitano;
 
+import com.backend.fields.Field;
 import com.backend.fields.Reservation;
 import com.elcapitano_system.ElcapitanoSystem;
 import com.feedback_windows.confirmScreen;
@@ -43,8 +44,6 @@ public class AddMatches_controller implements Initializable {
     private List<Button> selectedButtonList;
 
 
-
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -65,7 +64,7 @@ public class AddMatches_controller implements Initializable {
 
         selectedButtonList = new ArrayList<>();
 
-        chooseDate.setValue( LocalDate.now() );
+        chooseDate.setValue(LocalDate.now());
 
     }
 
@@ -75,20 +74,17 @@ public class AddMatches_controller implements Initializable {
         Button clickedButton = (Button) event.getSource();
 
         // Check if the button is already highlighted
-        if (clickedButton.getStyle().contains("-fx-background-color: red;"))
-        {
+        if (clickedButton.getStyle().contains("-fx-background-color: red;")) {
 
             selectedButtonList.clear();
-            System.out.println("No of selected : "+selectedButtonList.size());
+            System.out.println("No of selected : " + selectedButtonList.size());
             searchReservations(new ActionEvent());
             clickedButton.setStyle("-fx-background-color: orange;");
             // TODO: show resevation details and set spinner to related reservations number
             ShowDetailsOfReservation((String) ((Button) event.getSource()).getId());
             System.out.println((String) ((Button) event.getSource()).getId());
 
-        }
-        else if (clickedButton.getStyle().contains("-fx-background-color: orange;"))
-        {
+        } else if (clickedButton.getStyle().contains("-fx-background-color: orange;")) {
 
             clickedButton.setStyle("-fx-background-color: red;");
             updateSpinner(0);
@@ -96,20 +92,20 @@ public class AddMatches_controller implements Initializable {
 
         }
         if (clickedButton.getStyle().contains("-fx-background-color: #4bdb6f;")) {
-            if (selectedButtonList.size() == 0)clearAllFieldsExceptChoosenButton();
+            if (selectedButtonList.size() == 0) clearAllFieldsExceptChoosenButton();
             clearReservedIfSelected(buttonList);//for orange
             // Button is not highlighted, add the highlight
             clickedButton.setStyle("-fx-background-color: #5764f7;");
             selectedButtonList.add(clickedButton);
             updateSpinner(selectedButtonList.size());
-            System.out.println("No of selected : "+selectedButtonList.size());
+            System.out.println("No of selected : " + selectedButtonList.size());
 
         } else if (clickedButton.getStyle().contains("-fx-background-color: #5764f7;")) {
             // Button is highlighted, remove the highlight
             clickedButton.setStyle("-fx-background-color: #4bdb6f;");
             selectedButtonList.remove(clickedButton);
             updateSpinner(selectedButtonList.size());
-            System.out.println("No of selected : "+selectedButtonList.size());
+            System.out.println("No of selected : " + selectedButtonList.size());
 
         }
     }
@@ -132,7 +128,7 @@ public class AddMatches_controller implements Initializable {
                 (int) dateList.get(3)     // Assuming getReservationDetails expects an int as the fourth parameter
         );
         System.out.println(reservation);
-        showRelatedReservationButtons(reservation.day,reservation.hour,reservation.noHours);
+        showRelatedReservationButtons(reservation.date, reservation.day, reservation.hour, reservation.noHours);
 
         nameField.setText(reservation.name);
         phoneField.setText(reservation.mobile);
@@ -142,12 +138,48 @@ public class AddMatches_controller implements Initializable {
 
     }
 
-    private void showRelatedReservationButtons(int day, int hour, int noHours) {
+    private void showRelatedReservationButtons(String date, int day, int hour, int noHours) {
+        // get the date in this form "MM-yyyy" TODO
+        String pageDate = null;
+        String[] dateParts = pageDate.split("-");
+        int pageDay = 0;
+        Calendar pageCal = new Calendar.Builder().setDate(Integer.parseInt(dateParts[1]),
+                Integer.parseInt(dateParts[0]) - 1, pageDay).build();
+        //loop for the number of reservation hours
+        for (int i = 0; i < noHours; i++) {
+            dateParts = date.split("-");
+            Calendar cal = new Calendar.Builder().setDate(Integer.parseInt(dateParts[1]),
+                    Integer.parseInt(dateParts[0]) - 1, pageDay).build();
+            //if it is the same day, set the needed buttons into their color.
+            if (date.equals(pageDate)) {
+                if (day == pageDay) {
+                    //color your button using the value of hour. TODO
 
+                } else if (day > pageDay) {
+                    //that means it's in the next day, add indication. TODO
+
+                } else {
+                    // in the prev day, add indication. TODO
+                }
+            } else if (cal.compareTo(pageCal) < 0) {
+                //in the prev day, add indication TODO
+            }else{
+                // in the next days, add indication TODO
+            }
+
+            //increment hour
+            hour++;
+            if (hour == 24) {
+                hour = 0;
+                String[] parts = Field.nextDayDate(date, day, 1);
+                day = Integer.parseInt(parts[0]);
+                date = parts[1];
+            }
+        }
     }
 
 
-    private List<Object> getSelectedDate(String buttonId){
+    private List<Object> getSelectedDate(String buttonId) {
 
         LocalDate date = chooseDate.getValue();
         int dayOfMonth = date.getDayOfMonth();
@@ -159,15 +191,12 @@ public class AddMatches_controller implements Initializable {
     }
 
 
-    public void clearReservedIfSelected (List<Button> ButtonList)
-    {
-       for(int i=0 ;i<ButtonList.size() ; i++)
-       {
-           if (buttonList.get(i).getStyle().contains("-fx-background-color: orange;"))
-            {
+    public void clearReservedIfSelected(List<Button> ButtonList) {
+        for (int i = 0; i < ButtonList.size(); i++) {
+            if (buttonList.get(i).getStyle().contains("-fx-background-color: orange;")) {
                 buttonList.get(i).setStyle("-fx-background-color: red;");
-             }
-       }
+            }
+        }
     }
 
 
@@ -178,9 +207,9 @@ public class AddMatches_controller implements Initializable {
         int dayOfMonth = date.getDayOfMonth();
         String selectedPitch = choosePitch.getValue();
 
-        System.out.println(selectedPitch + "  " +date );
+        System.out.println(selectedPitch + "  " + date);
         // Check if both date and pitch are selected
-        if ( date==null || selectedPitch == null || selectedPitch.equals("Select a pitch")) {
+        if (date == null || selectedPitch == null || selectedPitch.equals("Select a pitch")) {
             System.out.println("Please choose both a date and a pitch.");
             return;
         }
@@ -265,8 +294,6 @@ public class AddMatches_controller implements Initializable {
     }
 
 
-
-
     public static int extractButtonNumber(String buttonName) {
         // Remove non-numeric characters
         String numericPart = buttonName.replaceAll("[^\\d]", "");
@@ -274,7 +301,7 @@ public class AddMatches_controller implements Initializable {
         // Remove leading zeros if any
         numericPart = numericPart.replaceFirst("^0+", "");
 
-        if(buttonName.equals("button00")) return 0; //Solving a hardcodded error when button00 is selected
+        if (buttonName.equals("button00")) return 0; //Solving a hardcodded error when button00 is selected
         // Convert the string to an integer
         return Integer.parseInt(numericPart);
     }
@@ -303,6 +330,7 @@ public class AddMatches_controller implements Initializable {
         // Update the value factory
         noOfHours.setValueFactory(valueFactory);
     }
+
     private boolean isConsecutiveButtons(List<Button> buttons) {
         if (buttons.size() < 2) {
             return true;  // A single button is always considered consecutive
