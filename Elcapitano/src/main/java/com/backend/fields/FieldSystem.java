@@ -106,6 +106,15 @@ public class FieldSystem {
         reservation.mobile=row.get(6);
         reservation.description= row.get(8);
 
+        int hours = reservation.noHours;
+        for(int i = 0 ; i<hours ; i++){
+            if((reservation.hour+i) <24)
+                reservation.day1Resevartions++;
+            else
+                reservation.day2Resevartions++;
+
+        }
+
         return null;
     }
 

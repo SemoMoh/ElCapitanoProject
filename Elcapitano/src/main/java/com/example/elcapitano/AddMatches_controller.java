@@ -1,6 +1,5 @@
 package com.example.elcapitano;
 
-import com.backend.fields.FieldSystem;
 import com.backend.fields.Reservation;
 import com.elcapitano_system.ElcapitanoSystem;
 import com.feedback_windows.confirmScreen;
@@ -13,10 +12,7 @@ import javafx.scene.control.*;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class AddMatches_controller implements Initializable {
 
@@ -85,12 +81,15 @@ public class AddMatches_controller implements Initializable {
             searchReservations(new ActionEvent());
             clickedButton.setStyle("-fx-background-color: orange;");
             // TODO: show resevation details and set spinner to related reservations number
+            ShowDetailsOfReservation((String) ((Button) event.getSource()).getId());
+            System.out.println((String) ((Button) event.getSource()).getId());
+
         }
         else if (clickedButton.getStyle().contains("-fx-background-color: orange;"))
         {
             clickedButton.setStyle("-fx-background-color: red;");
             updateSpinner(0);
-            //TODO: clear all fields and set spinner to 0
+
 
         }
         if (clickedButton.getStyle().contains("-fx-background-color: #4bdb6f;")) {
@@ -110,6 +109,39 @@ public class AddMatches_controller implements Initializable {
 
         }
     }
+
+    private void ShowDetailsOfReservation(String buttonId) {
+        List<Object> dateList = getSelectedDate(buttonId);
+        System.out.println(dateList);
+
+        Reservation reservation = ElcapitanoSystem.fieldSystem.getReservationDetails(
+                (String) dateList.get(2),    // Assuming getReservationDetails expects a String as the first parameter
+                (String) dateList.get(0),    // Assuming getReservationDetails expects a String as the second parameter
+                (int) dateList.get(1),       // Assuming getReservationDetails expects an int as the third parameter
+                (int) dateList.get(3)        // Assuming getReservationDetails expects an int as the fourth parameter
+        );
+        System.out.println(reservation);
+
+        nameField.setText(reservation.name);
+        phoneField.setText(reservation.mobile);
+        piadAmount.setText(String.valueOf(reservation.paid));
+        updateSpinner(reservation.noHours);
+        detailsField.setText(reservation.description);
+
+    }
+
+
+    private List<Object> getSelectedDate(String buttonId){
+
+        LocalDate date = chooseDate.getValue();
+        int dayOfMonth = date.getDayOfMonth();
+        String mappedPitch = mapToFunctionParameter(choosePitch.getValue());
+        String formattedDate = date.format(DateTimeFormatter.ofPattern("MM-yyyy"));
+        int hour = extractButtonNumber(buttonId);
+        List<Object> dateDayPitchHour = Arrays.asList(formattedDate, dayOfMonth, mappedPitch, hour);
+        return dateDayPitchHour;
+    }
+
 
     public void clearReservedIfSelected (List<Button> ButtonList)
     {
@@ -200,7 +232,7 @@ public class AddMatches_controller implements Initializable {
         confirmScreen confirmScreen = new confirmScreen(mappedPitch, formattedDate, nameField.getText(), selectedButtonList.size(), String.valueOf(hour));
         if (confirmScreen.showConfirmationDialog()) {
             Boolean confirmed = ElcapitanoSystem.fieldSystem.addReservation(mappedPitch, formattedDate, dayOfMonth, hour, selectedButtonList.size(), amountPaid, nameField.getText(), phoneField.getText(), detailsField.getText());
-            deleteAllFieldsWhenConfirm();
+            clearAllFields();
 
         }
 
@@ -221,7 +253,7 @@ public class AddMatches_controller implements Initializable {
         return Integer.parseInt(numericPart);
     }
 
-    private void deleteAllFieldsWhenConfirm() {
+    private void clearAllFields() {
         nameField.clear();
         phoneField.clear();
         piadAmount.clear();

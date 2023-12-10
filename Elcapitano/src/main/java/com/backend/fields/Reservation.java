@@ -1,5 +1,7 @@
 package com.backend.fields;
 
+import java.util.List;
+
 public class Reservation {
     public String fieldName;
     public String date;
@@ -11,5 +13,8 @@ public class Reservation {
     public String name;
     public String mobile;
     public String description;
+
+    public int day1Resevartions;
+    public int day2Resevartions;
 
 }
