@@ -29,7 +29,7 @@ public class FieldSystem {
         }
     }
 
-    //TODO: handle the case of No.4  which is ملعب 3-2
+
     private Field getField(String fieldName) {
         if (fieldName.equals("No.1")) {
             return this.smallField;
@@ -89,12 +89,33 @@ public class FieldSystem {
         return true;
     }
 
+
+
+    public Reservation getReservationDetails(String fieldName, String date, int day, int hour) {
+        Reservation reservation = new Reservation();
+        Field field = this.getField(fieldName);
+        List<String> row= field.getReservation(date,day,hour);
+        //TODO: fuckin do this
+        reservation.date= row.get(9);
+        reservation.day=Integer.parseInt(row.get(0));
+        reservation.hour=Integer.parseInt(row.get(1));
+        reservation.noHours=Integer.parseInt(row.get(2));
+        reservation.totalAmount=Integer.parseInt(row.get(3));
+        reservation.paid=Integer.parseInt(row.get(4));
+        reservation.name=row.get(5);
+        reservation.mobile=row.get(6);
+        reservation.description= row.get(8);
+
+        return null;
+    }
+
+
     public static void main(String[] args) {
         FieldSystem f = new FieldSystem(50, 100);
     }
 
 
-    public static int getNoOfHoursOfRelatedReservation(String date, int day, String fieldName , int hour){
+    public static int getNoOfHoursOfRelatedReservation(String date, int day, String fieldName, int hour) {
 
         return 1;
     }

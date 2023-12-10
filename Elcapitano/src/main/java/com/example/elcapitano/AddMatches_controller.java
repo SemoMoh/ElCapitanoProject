@@ -1,6 +1,7 @@
 package com.example.elcapitano;
 
 import com.backend.fields.FieldSystem;
+import com.backend.fields.Reservation;
 import com.elcapitano_system.ElcapitanoSystem;
 import com.feedback_windows.confirmScreen;
 import javafx.event.ActionEvent;
@@ -88,6 +89,7 @@ public class AddMatches_controller implements Initializable {
         else if (clickedButton.getStyle().contains("-fx-background-color: orange;"))
         {
             clickedButton.setStyle("-fx-background-color: red;");
+            updateSpinner(0);
             //TODO: clear all fields and set spinner to 0
 
         }
@@ -96,12 +98,14 @@ public class AddMatches_controller implements Initializable {
             // Button is not highlighted, add the highlight
             clickedButton.setStyle("-fx-background-color: #5764f7;");
             selectedButtonList.add(clickedButton);
+            updateSpinner(selectedButtonList.size());
             System.out.println("No of selected : "+selectedButtonList.size());
 
         } else if (clickedButton.getStyle().contains("-fx-background-color: #5764f7;")) {
             // Button is highlighted, remove the highlight
             clickedButton.setStyle("-fx-background-color: #4bdb6f;");
             selectedButtonList.remove(clickedButton);
+            updateSpinner(selectedButtonList.size());
             System.out.println("No of selected : "+selectedButtonList.size());
 
         }
@@ -224,6 +228,22 @@ public class AddMatches_controller implements Initializable {
         detailsField.clear();
         searchReservations(new ActionEvent());
         // You can add more fields to clear as needed
+    }
+
+    private void updateSpinner(int amount) {
+        // Get the current value factory
+        SpinnerValueFactory<Integer> valueFactory = noOfHours.getValueFactory();
+        // Check if the valueFactory is null, and create a new one if it is
+        if (valueFactory == null) {
+            valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, 0);
+            noOfHours.setValueFactory(valueFactory);
+        }
+
+        // Set the new value
+        valueFactory.setValue(amount);
+
+        // Update the value factory
+        noOfHours.setValueFactory(valueFactory);
     }
 
 }

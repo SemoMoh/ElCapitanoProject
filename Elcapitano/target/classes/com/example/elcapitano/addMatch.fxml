@@ -58,7 +58,7 @@
                   <Insets />
                </opaqueInsets>
             </HBox>
-            <Button fx:id="button00" layoutX="538.0" layoutY="178.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="00:00 -- 01:00" AnchorPane.rightAnchor="60.39999999999998" />
+            <Button fx:id="button00" layoutX="538.0" layoutY="178.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="12:00 -- 01:00" AnchorPane.rightAnchor="60.39999999999998" />
             <Button fx:id="button01" layoutX="538.0" layoutY="210.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="01:00 -- 02:00" AnchorPane.rightAnchor="60.39999999999998" />
             <Button fx:id="button02" layoutX="538.0" layoutY="243.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="02:00 -- 03:00" AnchorPane.rightAnchor="60.39999999999998" />
             <Button fx:id="button03" layoutX="538.0" layoutY="277.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="03:00 -- 04:00" AnchorPane.rightAnchor="60.39999999999998" />
@@ -139,6 +139,16 @@
                </font>
             </Label>
             <Spinner fx:id="noOfHours" layoutX="282.0" layoutY="197.0" prefHeight="26.0" prefWidth="59.0" AnchorPane.rightAnchor="858.8" />
+            <Label layoutX="971.0" layoutY="151.0" text="مساءً" AnchorPane.rightAnchor="195.4">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+            <Label layoutX="1075.0" layoutY="151.0" text="صباحًا" AnchorPane.rightAnchor="85.8">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
    </children>

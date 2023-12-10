@@ -150,6 +150,7 @@ public abstract class Field {
             List<String> row = toSearchIN.getRow(day, time);
             //check the Number of hour fields if it was "0" or not "" return the list.
             if (row.get(2).equals("0") || !row.get(2).equals("")) {
+                row.add(date);
                 return row;
             } else {
                 //look up in the table until finding the header.
