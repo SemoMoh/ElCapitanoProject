@@ -3,6 +3,7 @@ package com.example.elcapitano;
 import com.backend.fields.Reservation;
 import com.elcapitano_system.ElcapitanoSystem;
 import com.feedback_windows.confirmScreen;
+import com.feedback_windows.errorScreen;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -13,6 +14,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class AddMatches_controller implements Initializable {
 
@@ -87,13 +89,15 @@ public class AddMatches_controller implements Initializable {
         }
         else if (clickedButton.getStyle().contains("-fx-background-color: orange;"))
         {
+
             clickedButton.setStyle("-fx-background-color: red;");
             updateSpinner(0);
 
 
         }
         if (clickedButton.getStyle().contains("-fx-background-color: #4bdb6f;")) {
-            clearReservedIfSelected(buttonList);
+            if (selectedButtonList.size() == 0)clearAllFieldsExceptChoosenButton();
+            clearReservedIfSelected(buttonList);//for orange
             // Button is not highlighted, add the highlight
             clickedButton.setStyle("-fx-background-color: #5764f7;");
             selectedButtonList.add(clickedButton);
@@ -110,6 +114,13 @@ public class AddMatches_controller implements Initializable {
         }
     }
 
+    private void clearAllFieldsExceptChoosenButton() {
+        nameField.clear();
+        phoneField.clear();
+        piadAmount.clear();
+        detailsField.clear();
+    }
+
     private void ShowDetailsOfReservation(String buttonId) {
         List<Object> dateList = getSelectedDate(buttonId);
         System.out.println(dateList);
@@ -118,15 +129,20 @@ public class AddMatches_controller implements Initializable {
                 (String) dateList.get(2),    // Assuming getReservationDetails expects a String as the first parameter
                 (String) dateList.get(0),    // Assuming getReservationDetails expects a String as the second parameter
                 (int) dateList.get(1),       // Assuming getReservationDetails expects an int as the third parameter
-                (int) dateList.get(3)        // Assuming getReservationDetails expects an int as the fourth parameter
+                (int) dateList.get(3)     // Assuming getReservationDetails expects an int as the fourth parameter
         );
         System.out.println(reservation);
+        showRelatedReservationButtons(reservation.day,reservation.hour,reservation.noHours);
 
         nameField.setText(reservation.name);
         phoneField.setText(reservation.mobile);
         piadAmount.setText(String.valueOf(reservation.paid));
         updateSpinner(reservation.noHours);
         detailsField.setText(reservation.description);
+
+    }
+
+    private void showRelatedReservationButtons(int day, int hour, int noHours) {
 
     }
 
@@ -219,25 +235,34 @@ public class AddMatches_controller implements Initializable {
 
 
     public void confitmResetvations(ActionEvent actionEvent) {
+        LocalDate date = chooseDate.getValue();
+        int dayOfMonth = date.getDayOfMonth();
+        String mappedPitch = mapToFunctionParameter(choosePitch.getValue());
+        String formattedDate = date.format(DateTimeFormatter.ofPattern("MM-yyyy"));
+        int amountPaid = 0;
 
-
-            LocalDate date = chooseDate.getValue();
-            int dayOfMonth = date.getDayOfMonth();
-            String mappedPitch = mapToFunctionParameter(choosePitch.getValue());
-            String formattedDate = date.format(DateTimeFormatter.ofPattern("MM-yyyy"));
-            int hour = extractButtonNumber(selectedButtonList.get(0).getId());
-            int amountPaid= Integer.parseInt(piadAmount.getText());
-
-
-        confirmScreen confirmScreen = new confirmScreen(mappedPitch, formattedDate, nameField.getText(), selectedButtonList.size(), String.valueOf(hour));
-        if (confirmScreen.showConfirmationDialog()) {
-            Boolean confirmed = ElcapitanoSystem.fieldSystem.addReservation(mappedPitch, formattedDate, dayOfMonth, hour, selectedButtonList.size(), amountPaid, nameField.getText(), phoneField.getText(), detailsField.getText());
-            clearAllFields();
-
+        if (piadAmount.getText().isEmpty()) {
+            errorScreen.showAlert("قيمة الحجز فارغة", " رجاء ادخال قيمة الحجز");
+            return;
+        } else {
+            amountPaid = Integer.parseInt(piadAmount.getText());
         }
 
-    }
+        int hour = -1;  // Initialize to an invalid value
+        if (!selectedButtonList.isEmpty()) {
+            hour = extractButtonNumber(selectedButtonList.get(0).getId());
+        }
 
+        if (isConsecutiveButtons(selectedButtonList)) {
+            confirmScreen confirmScreen = new confirmScreen(mappedPitch, formattedDate, nameField.getText(), selectedButtonList.size(), String.valueOf(hour));
+            if (confirmScreen.showConfirmationDialog()) {
+                Boolean confirmed = ElcapitanoSystem.fieldSystem.addReservation(mappedPitch, formattedDate, dayOfMonth, hour, selectedButtonList.size(), amountPaid, nameField.getText(), phoneField.getText(), detailsField.getText());
+                clearAllFields();
+            }
+        } else {
+            errorScreen.showAlert("تحديد مواعيد غير صحيح", "يرجى اختيار اوقات متتالية");
+        }
+    }
 
 
 
@@ -249,6 +274,7 @@ public class AddMatches_controller implements Initializable {
         // Remove leading zeros if any
         numericPart = numericPart.replaceFirst("^0+", "");
 
+        if(buttonName.equals("button00")) return 0; //Solving a hardcodded error when button00 is selected
         // Convert the string to an integer
         return Integer.parseInt(numericPart);
     }
@@ -276,6 +302,26 @@ public class AddMatches_controller implements Initializable {
 
         // Update the value factory
         noOfHours.setValueFactory(valueFactory);
+    }
+    private boolean isConsecutiveButtons(List<Button> buttons) {
+        if (buttons.size() < 2) {
+            return true;  // A single button is always considered consecutive
+        }
+
+        // Extract button numbers and sort them
+        List<Integer> buttonNumbers = buttons.stream()
+                .map(button -> extractButtonNumber(button.getId()))
+                .sorted()
+                .collect(Collectors.toList());
+
+        // Check if the buttons are consecutive
+        for (int i = 0; i < buttonNumbers.size() - 1; i++) {
+            if (buttonNumbers.get(i + 1) - buttonNumbers.get(i) != 1) {
+                return false;  // Buttons are not consecutive
+            }
+        }
+
+        return true;  // Buttons are consecutive
     }
 
 }
