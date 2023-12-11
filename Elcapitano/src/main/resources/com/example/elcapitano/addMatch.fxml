@@ -83,8 +83,8 @@
             <Button fx:id="button22" layoutX="428.0" layoutY="520.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="10:00 -- 11:00" AnchorPane.rightAnchor="170.39999999999998" />
             <Button fx:id="button23" layoutX="428.0" layoutY="554.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="11:00 -- 12:00" AnchorPane.rightAnchor="170.39999999999998" />
             <HBox alignment="CENTER" layoutX="1.0" layoutY="633.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="650.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-            <TextField fx:id="piadAmount" alignment="CENTER" layoutX="71.0" layoutY="301.0" AnchorPane.rightAnchor="500.0" />
-            <TextField alignment="CENTER" editable="false" layoutX="550.4" layoutY="361.0" AnchorPane.rightAnchor="500.0" />
+            <TextField fx:id="piadAmount" alignment="CENTER" layoutX="71.0" layoutY="301.0" AnchorPane.rightAnchor="500.0" onAction="#updatePriceFields"/>
+            <TextField fx:id="remainingAmount" alignment="CENTER" editable="false" layoutX="550.4" layoutY="361.0" AnchorPane.rightAnchor="500.0" />
             <Label layoutX="762.0" layoutY="191.0" text="الاسم" AnchorPane.rightAnchor="401.20000000000005">
                <font>
                   <Font name="System Bold" size="16.0" />
@@ -120,7 +120,7 @@
                   <Font name="System Bold" size="16.0" />
                </font>
             </Label>
-            <TextField alignment="CENTER" editable="false" layoutX="165.0" layoutY="251.0" prefHeight="26.0" prefWidth="59.0" AnchorPane.rightAnchor="858.0" />
+            <TextField fx:id="hourPrice" alignment="CENTER" editable="false" layoutX="165.0" layoutY="251.0" prefHeight="26.0" prefWidth="59.0" AnchorPane.rightAnchor="858.0" />
             <TextArea fx:id="detailsField" layoutX="14.0" layoutY="223.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="200.0" prefWidth="200.0" promptText="ملاحظات" AnchorPane.rightAnchor="986.0" />
             <Label layoutX="69.0" layoutY="194.0" text="اضف ملاحظات" AnchorPane.rightAnchor="1042.2">
                <font>
@@ -132,13 +132,13 @@
                   <Font name="System Bold" size="16.0" />
                </font>
             </Button>
-            <TextField alignment="CENTER" layoutX="550.0" layoutY="416.0" AnchorPane.rightAnchor="500.4" />
+            <TextField fx:id="totalAmount" alignment="CENTER" layoutX="550.0" layoutY="416.0" AnchorPane.rightAnchor="500.4" />
             <Label layoutX="714.0" layoutY="416.0" text="المبلغ الاجمالي" AnchorPane.rightAnchor="387.6">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>
             </Label>
-            <Spinner fx:id="noOfHours" layoutX="282.0" layoutY="197.0" prefHeight="26.0" prefWidth="59.0" AnchorPane.rightAnchor="858.8" />
+            <Spinner fx:id="noOfHours" layoutX="282.0" layoutY="197.0" onMouseClicked="#handleSpinnerChange" prefHeight="26.0" prefWidth="59.0" AnchorPane.rightAnchor="858.8" />
             <Label layoutX="971.0" layoutY="151.0" text="مساءً" AnchorPane.rightAnchor="195.4">
                <font>
                   <Font name="System Bold" size="16.0" />

@@ -14,16 +14,14 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-
-<VBox fx:id="nonResizableVbox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="blue-background" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.elcapitano.HelloController" style="-fx-background-color: #5030c2;" >
+<VBox fx:id="nonResizableVbox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #65c5c1;" styleClass="blue-background" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.elcapitano.HelloController">
 
     <children>
         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
             <children>
-                <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                <ImageView fitHeight="187.0" fitWidth="182.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../assets/test_elcapitano.jpg" />
+                  <Image url="@../../../assets/levelsFc.jpg" />
                </image></ImageView>
             </children>
             <padding>
@@ -45,7 +43,7 @@
                <padding>
                   <Insets left="5.0" />
                </padding></CheckBox>
-                <Button  fx:id="loginButton" maxWidth="1.7976931348623157E308" text="Login" GridPane.columnSpan="2147483647" GridPane.rowIndex="2" onAction="#checkPassword">
+                <Button fx:id="loginButton" maxWidth="1.7976931348623157E308" onAction="#checkPassword" text="Login" GridPane.columnSpan="2147483647" GridPane.rowIndex="2">
                     <GridPane.margin>
                         <Insets bottom="10.0" top="10.0" />
                     </GridPane.margin>

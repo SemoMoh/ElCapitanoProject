@@ -25,6 +25,9 @@ public class AddMatches_controller implements Initializable {
     public TextField phoneField;
     public TextField piadAmount;
     public TextArea detailsField;
+    public TextField hourPrice;
+    public TextField totalAmount;
+    public TextField remainingAmount;
     private ElcapitanoSystem databaseSystem;
     @FXML
     private DatePicker chooseDate;
@@ -66,6 +69,9 @@ public class AddMatches_controller implements Initializable {
 
         chooseDate.setValue(LocalDate.now());
 
+        piadAmount.textProperty().addListener((observable, oldValue, newValue) -> {
+            updatePriceFields();
+        });
     }
 
     @FXML
@@ -85,9 +91,21 @@ public class AddMatches_controller implements Initializable {
             System.out.println((String) ((Button) event.getSource()).getId());
 
         } else if (clickedButton.getStyle().contains("-fx-background-color: orange;")) {
+            ///
 
-            clickedButton.setStyle("-fx-background-color: red;");
-            updateSpinner(0);
+
+            selectedButtonList.clear();
+            System.out.println("No of selected : " + selectedButtonList.size());
+            searchReservations(new ActionEvent());
+            clickedButton.setStyle("-fx-background-color: orange;");
+            // TODO: show resevation details and set spinner to related reservations number
+            ShowDetailsOfReservation((String) ((Button) event.getSource()).getId());
+            System.out.println((String) ((Button) event.getSource()).getId());
+
+
+            ///
+           //  clickedButton.setStyle("-fx-background-color: red;");
+           // updateSpinner(0);
 
 
         }
@@ -128,7 +146,7 @@ public class AddMatches_controller implements Initializable {
                 (int) dateList.get(3)     // Assuming getReservationDetails expects an int as the fourth parameter
         );
         System.out.println(reservation);
-        showRelatedReservationButtons(reservation.date, reservation.day, reservation.hour, reservation.noHours);
+        showRelatedReservationButtons(reservation.date, reservation.day, reservation.hour, reservation.noHours,(String) dateList.get(0),(int) dateList.get(1) );
 
         nameField.setText(reservation.name);
         phoneField.setText(reservation.mobile);
@@ -138,11 +156,11 @@ public class AddMatches_controller implements Initializable {
 
     }
 
-    private void showRelatedReservationButtons(String date, int day, int hour, int noHours) {
-        // get the date in this form "MM-yyyy" TODO
-        String pageDate = null;
+    private void showRelatedReservationButtons(String date, int day, int hour, int noHours ,String PageDate ,int PageDay) {
+
+        String pageDate = PageDate;
         String[] dateParts = pageDate.split("-");
-        int pageDay = 0;
+        int pageDay = PageDay;
         Calendar pageCal = new Calendar.Builder().setDate(Integer.parseInt(dateParts[1]),
                 Integer.parseInt(dateParts[0]) - 1, pageDay).build();
         //loop for the number of reservation hours
@@ -153,8 +171,9 @@ public class AddMatches_controller implements Initializable {
             //if it is the same day, set the needed buttons into their color.
             if (date.equals(pageDate)) {
                 if (day == pageDay) {
-                    //color your button using the value of hour. TODO
-
+                    //color your button using the value of hour.
+                    buttonList.get(hour).setStyle("-fx-background-color: orange;");
+                    System.out.println("Hours to be updated to yellow"+hour);
                 } else if (day > pageDay) {
                     //that means it's in the next day, add indication. TODO
 
@@ -216,6 +235,8 @@ public class AddMatches_controller implements Initializable {
 
         // Map the selected pitch to the parameter expected by the function
         String mappedPitch = mapToFunctionParameter(selectedPitch);
+        if (mappedPitch.equals("No.5")) {hourPrice.setText("400");}
+        else hourPrice.setText("250");
 
         // Format the date to MM-yyyy
         String formattedDate = date.format(DateTimeFormatter.ofPattern("MM-yyyy"));
@@ -225,6 +246,30 @@ public class AddMatches_controller implements Initializable {
         boolean[] reservationsOfThisDay = getReservationOfThisDay(formattedDate, dayOfMonth, mappedPitch);
         System.out.println(Arrays.toString(reservationsOfThisDay));
         updateButtonsOnSearch(reservationsOfThisDay);
+    }
+
+
+    @FXML
+    private void updatePriceFields() {
+        int selectedHours = selectedButtonList.size();
+        int spinnerValue = (int) noOfHours.getValueFactory().getValue();
+
+        // Ensure the spinner value is at least the number of selected hours
+        spinnerValue = Math.max(spinnerValue, selectedHours);
+
+        int hourPriceValue = Integer.parseInt(hourPrice.getText());
+        int totalAmountValue = spinnerValue * hourPriceValue;
+
+        // Check if the paid amount is empty
+        if (piadAmount.getText().isEmpty()) {
+            // If paid amount is not entered, set remaining amount equal to total amount
+            remainingAmount.setText(String.valueOf(totalAmountValue));
+        } else {
+            int remainingAmountValue = totalAmountValue - Integer.parseInt(piadAmount.getText());
+            remainingAmount.setText(String.valueOf(Math.max(0, remainingAmountValue)));
+        }
+
+        totalAmount.setText(String.valueOf(totalAmountValue));
     }
 
     public boolean[] getReservationOfThisDay(String MMYYYY, int day, String pitchNo) {
@@ -270,6 +315,15 @@ public class AddMatches_controller implements Initializable {
         String formattedDate = date.format(DateTimeFormatter.ofPattern("MM-yyyy"));
         int amountPaid = 0;
 
+
+        int totalAmountValue = Integer.parseInt(totalAmount.getText());
+        int paidAmountValue = piadAmount.getText().isEmpty() ? 0 : Integer.parseInt(piadAmount.getText());
+
+        if (paidAmountValue > totalAmountValue) {
+            errorScreen.showAlert("تحديد مبلغ غير صحيح", "لا يمكن للمبلغ المدفوع تجاوز المبلغ الإجمالي");
+            return;
+        }
+
         if (piadAmount.getText().isEmpty()) {
             errorScreen.showAlert("قيمة الحجز فارغة", " رجاء ادخال قيمة الحجز");
             return;
@@ -282,13 +336,14 @@ public class AddMatches_controller implements Initializable {
             hour = extractButtonNumber(selectedButtonList.get(0).getId());
         }
 
-        if (isConsecutiveButtons(selectedButtonList)) {
-            confirmScreen confirmScreen = new confirmScreen(mappedPitch, formattedDate, nameField.getText(), selectedButtonList.size(), String.valueOf(hour));
+        int hoursNoToBeConfirmed = Math.max((int) noOfHours.getValueFactory().getValue(), selectedButtonList.size());
+
+            confirmScreen confirmScreen = new confirmScreen(mappedPitch, formattedDate, nameField.getText(), hoursNoToBeConfirmed, String.valueOf(hour));
             if (confirmScreen.showConfirmationDialog()) {
-                Boolean confirmed = ElcapitanoSystem.fieldSystem.addReservation(mappedPitch, formattedDate, dayOfMonth, hour, selectedButtonList.size(), amountPaid, nameField.getText(), phoneField.getText(), detailsField.getText());
+                Boolean confirmed = ElcapitanoSystem.fieldSystem.addReservation(mappedPitch, formattedDate, dayOfMonth, hour, hoursNoToBeConfirmed, amountPaid, nameField.getText(), phoneField.getText(), detailsField.getText());
                 clearAllFields();
             }
-        } else {
+         else {
             errorScreen.showAlert("تحديد مواعيد غير صحيح", "يرجى اختيار اوقات متتالية");
         }
     }
@@ -318,6 +373,7 @@ public class AddMatches_controller implements Initializable {
     private void updateSpinner(int amount) {
         // Get the current value factory
         SpinnerValueFactory<Integer> valueFactory = noOfHours.getValueFactory();
+
         // Check if the valueFactory is null, and create a new one if it is
         if (valueFactory == null) {
             valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, 0);
@@ -327,9 +383,21 @@ public class AddMatches_controller implements Initializable {
         // Set the new value
         valueFactory.setValue(amount);
 
+        // If the spinner is decremented, reset the selection of the farthest selected button
+        if (amount < selectedButtonList.size()) {
+            int farthestSelectedIndex = selectedButtonList.size() - 1;
+            for (int i = selectedButtonList.size() - 1; i >= amount; i--) {
+                Button farthestSelectedButton = selectedButtonList.get(i);
+                farthestSelectedButton.setStyle("-fx-background-color: #4bdb6f;");
+                selectedButtonList.remove(farthestSelectedButton);
+            }
+        }
+
         // Update the value factory
         noOfHours.setValueFactory(valueFactory);
+        updatePriceFields();
     }
+
 
     private boolean isConsecutiveButtons(List<Button> buttons) {
         if (buttons.size() < 2) {
@@ -352,4 +420,56 @@ public class AddMatches_controller implements Initializable {
         return true;  // Buttons are consecutive
     }
 
+
+    @FXML
+    private void handleSpinnerChange(Event event) {
+        // Check if there are selected buttons
+        if (!selectedButtonList.isEmpty()) {
+            // Get the current value of the spinner
+            int spinnerValue = (int) noOfHours.getValue();
+
+            // Get the last selected button
+            Button lastSelectedButton = selectedButtonList.get(selectedButtonList.size() - 1);
+
+            // Get the index of the last selected button in the buttonList
+            int lastIndex = buttonList.indexOf(lastSelectedButton);
+
+            // Check if the spinner is incremented
+            if (spinnerValue > selectedButtonList.size()) {
+                // Check if there is a next button in the list
+                if (lastIndex < buttonList.size() - 1) {
+                    // Get the next button
+                    Button nextButton = buttonList.get(lastIndex + 1);
+
+                    // Check if the next button is not reserved and not already selected
+                    if (!nextButton.getStyle().contains("-fx-background-color: red;") && !selectedButtonList.contains(nextButton)) {
+                        // Set the background color of the next button to blue
+                        nextButton.setStyle("-fx-background-color: #5764f7;");
+                        selectedButtonList.add(nextButton);
+                    } else {
+                        // Show an error screen if the next button is reserved or already selected
+                        errorScreen.showAlert("تحديد مواعيد غير صحيح", "لا يمكن إضافة المزيد من الأوقات، يرجى التحقق من التواريخ المحددة");
+                        // Reset the spinner value to the previous value
+                        noOfHours.decrement();
+                    }
+                } else {
+                  /*  // Show an error screen if there are not enough next buttons
+                    errorScreen.showAlert("تحديد مواعيد غير صحيح", "لا يمكن إضافة المزيد من الأوقات، يرجى التحقق من التواريخ المحددة");
+                    // Reset the spinner value to the previous value
+                    noOfHours.decrement();*/
+                }
+            } else if (spinnerValue < selectedButtonList.size()) {
+                // Check if the spinner is decremented
+                // Remove the farthest selected button
+                int farthestIndex = lastIndex - spinnerValue + 1;
+                if (farthestIndex >= 0 && farthestIndex < selectedButtonList.size()) {
+                    Button farthestSelectedButton = selectedButtonList.get(farthestIndex);
+                    farthestSelectedButton.setStyle("-fx-background-color: #4bdb6f;");  // Reset color
+                    selectedButtonList.remove(farthestIndex);
+                }
+            } else {
+                // Spinner value is the same, do nothing
+            }
+        }
+    }
 }
