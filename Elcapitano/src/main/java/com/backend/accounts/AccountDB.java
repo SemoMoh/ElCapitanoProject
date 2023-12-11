@@ -57,7 +57,7 @@ public class AccountDB {
         if (!file.exists()) {
             boolean isCreated = file.createNewFile();
             if (isCreated) {
-                addAccount("user", "user", "Admin", "admin", "0");
+                addAccount("user", "admin", "TRUE", "admin", "0");
                 write();
             }
             return isCreated;
@@ -72,7 +72,6 @@ public class AccountDB {
      * @throws IOException
      */
     public static ArrayList<String> loadAccounts() throws IOException {
-        dbPath = HelloApplication.DB_path;
         FileReader reader = new FileReader(dbPath + DB_NAME);
         BufferedReader bufferedReader = new BufferedReader(reader);
         String line;
@@ -177,7 +176,7 @@ public class AccountDB {
         loadAccounts();
         for (String account : accounts) {
             String[] data = account.split(",");
-            if (data[0].equals(username) && data[3].equals(password)) {
+            if (data[0].equals(username) && data[1].equals(password)) {
                 return true;
             }
         }

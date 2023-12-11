@@ -4,9 +4,10 @@ import com.backend.accounts.AccountDB;
 import com.backend.accounts.ExpensesSheet;
 import com.backend.accounts.IncomeSheet;
 import com.backend.accounts.Report;
-import java.io.IOException;
 import com.backend.fields.FieldSystem;
+import com.example.elcapitano.HelloApplication;
 
+import java.io.IOException;
 
 
 public class ElcapitanoSystem {
@@ -21,6 +22,7 @@ public class ElcapitanoSystem {
         {
             fieldSystem = new FieldSystem(400, 250);
             // initialize the accounts.
+            AccountDB.dbPath = HelloApplication.DB_path;
             accountDB = AccountDB.getInstance();
         }
     }
