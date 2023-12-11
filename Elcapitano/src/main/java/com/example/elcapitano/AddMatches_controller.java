@@ -104,8 +104,8 @@ public class AddMatches_controller implements Initializable {
 
 
             ///
-           //  clickedButton.setStyle("-fx-background-color: red;");
-           // updateSpinner(0);
+            //  clickedButton.setStyle("-fx-background-color: red;");
+            // updateSpinner(0);
 
 
         }
@@ -146,7 +146,7 @@ public class AddMatches_controller implements Initializable {
                 (int) dateList.get(3)     // Assuming getReservationDetails expects an int as the fourth parameter
         );
         System.out.println(reservation);
-        showRelatedReservationButtons(reservation.date, reservation.day, reservation.hour, reservation.noHours,(String) dateList.get(0),(int) dateList.get(1) );
+        showRelatedReservationButtons(reservation.date, reservation.day, reservation.hour, reservation.noHours, (String) dateList.get(0), (int) dateList.get(1));
 
         nameField.setText(reservation.name);
         phoneField.setText(reservation.mobile);
@@ -156,7 +156,7 @@ public class AddMatches_controller implements Initializable {
 
     }
 
-    private void showRelatedReservationButtons(String date, int day, int hour, int noHours ,String PageDate ,int PageDay) {
+    private void showRelatedReservationButtons(String date, int day, int hour, int noHours, String PageDate, int PageDay) {
 
         String pageDate = PageDate;
         String[] dateParts = pageDate.split("-");
@@ -173,7 +173,7 @@ public class AddMatches_controller implements Initializable {
                 if (day == pageDay) {
                     //color your button using the value of hour.
                     buttonList.get(hour).setStyle("-fx-background-color: orange;");
-                    System.out.println("Hours to be updated to yellow"+hour);
+                    System.out.println("Hours to be updated to yellow" + hour);
                 } else if (day > pageDay) {
                     //that means it's in the next day, add indication. TODO
 
@@ -182,7 +182,7 @@ public class AddMatches_controller implements Initializable {
                 }
             } else if (cal.compareTo(pageCal) < 0) {
                 //in the prev day, add indication TODO
-            }else{
+            } else {
                 // in the next days, add indication TODO
             }
 
@@ -235,8 +235,9 @@ public class AddMatches_controller implements Initializable {
 
         // Map the selected pitch to the parameter expected by the function
         String mappedPitch = mapToFunctionParameter(selectedPitch);
-        if (mappedPitch.equals("No.5")) {hourPrice.setText("400");}
-        else hourPrice.setText("250");
+        if (mappedPitch.equals("No.5")) {
+            hourPrice.setText("400");
+        } else hourPrice.setText("250");
 
         // Format the date to MM-yyyy
         String formattedDate = date.format(DateTimeFormatter.ofPattern("MM-yyyy"));
@@ -338,14 +339,22 @@ public class AddMatches_controller implements Initializable {
 
         int hoursNoToBeConfirmed = Math.max((int) noOfHours.getValueFactory().getValue(), selectedButtonList.size());
 
-            confirmScreen confirmScreen = new confirmScreen(mappedPitch, formattedDate, nameField.getText(), hoursNoToBeConfirmed, String.valueOf(hour));
-            if (confirmScreen.showConfirmationDialog()) {
-                Boolean confirmed = ElcapitanoSystem.fieldSystem.addReservation(mappedPitch, formattedDate, dayOfMonth, hour, hoursNoToBeConfirmed, amountPaid, nameField.getText(), phoneField.getText(), detailsField.getText());
+        confirmScreen confirmScreen = new confirmScreen(mappedPitch, formattedDate, nameField.getText(), hoursNoToBeConfirmed, String.valueOf(hour));
+        if (isConsecutiveButtons(selectedButtonList) ) {
+
+            if (confirmScreen.showConfirmationDialog()){
+            Boolean confirmed = ElcapitanoSystem.fieldSystem.addReservation(mappedPitch, formattedDate, dayOfMonth, hour, hoursNoToBeConfirmed, amountPaid, nameField.getText(), phoneField.getText(), detailsField.getText());
+            if (confirmed) {
                 clearAllFields();
             }
-         else {
+            else {
+                errorScreen.showAlert("تحديد مواعيد غير صحيح", "احد المواعيد غير متاحة");
+            }
+            }
+        } else if (!isConsecutiveButtons(selectedButtonList)){
             errorScreen.showAlert("تحديد مواعيد غير صحيح", "يرجى اختيار اوقات متتالية");
         }
+
     }
 
 

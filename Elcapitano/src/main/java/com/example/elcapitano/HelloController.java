@@ -102,7 +102,8 @@ public class HelloController extends HelloApplication {
             newStage.setTitle("Elcapitano");
             // newStage.setResizable(false);
             newStage.setScene(scene);
-            newStage.setFullScreen(true);
+            newStage.setMaximized(true);
+            //newStage.setFullScreen(true);
             newStage.show();
 
             // Close the current login stage
