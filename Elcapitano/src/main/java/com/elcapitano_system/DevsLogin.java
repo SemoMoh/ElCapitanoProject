@@ -22,40 +22,40 @@ public class DevsLogin {
 
     public boolean checkDevice() {
         //First load the data from the Dev_DB_File
-        User user = readDB();
-        if (user.getMac() == null) {
+        DevUser devUser = readDB();
+        if (devUser.getMac() == null) {
             // that means we require the user to contact us the devs for login.
             return false;
         }
         //if the MAC address is available, compare it with the one obtained form the device.
         String deviceMAC = encrypt(getMACAddress());
-        return deviceMAC.equals(encrypt(user.getMac()));
+        return deviceMAC.equals(encrypt(devUser.getMac()));
     }
 
     public boolean newLogin(String username, String password, String databasePath) {
         username = encrypt(username);
         password = encrypt(password);
-        User user = readDB();
-        if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
-            user.setMac(getMACAddress());
+        DevUser devUser = readDB();
+        if (devUser.getUsername().equals(username) && devUser.getPassword().equals(password)) {
+            devUser.setMac(getMACAddress());
             pathToDB = databasePath;
-            user.setPathToDB(pathToDB);
-            saveDB(user);
+            devUser.setPathToDB(pathToDB);
+            saveDB(devUser);
             return true;
         }
         return false;
         //close the app.
     }
 
-    private void saveDB(User user) {
+    private void saveDB(DevUser devUser) {
         File file = new File(Dev_DB_File);
         FileWriter writer;
         try {
             writer = new FileWriter(file);
-            writer.write(user.getUsername() + "\n");
-            writer.write(user.getPassword() + "\n");
-            writer.write(user.getMac() + "\n");
-            writer.write(user.getPathToDB());
+            writer.write(devUser.getUsername() + "\n");
+            writer.write(devUser.getPassword() + "\n");
+            writer.write(devUser.getMac() + "\n");
+            writer.write(devUser.getPathToDB());
             writer.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -80,7 +80,7 @@ public class DevsLogin {
         return macAddress.toString();
     }
 
-    private User readDB() {
+    private DevUser readDB() {
         File file = new File(Dev_DB_File);
         Scanner scanner;
         try {
@@ -92,17 +92,17 @@ public class DevsLogin {
         String username = scanner.nextLine().split("\n")[0];
         // the 2nd line contains the password.
         String password = scanner.nextLine().split("\n")[0];
-        User user = new User(username, password);
+        DevUser devUser = new DevUser(username, password);
         // the 3rd line contains the MAC address of the device if found.
         if (scanner.hasNextLine()) {
             String mac = scanner.nextLine().split("\n")[0];
-            user.setMac(mac);
+            devUser.setMac(mac);
         }
         if (scanner.hasNextLine()) {
-            user.setPathToDB(scanner.nextLine().split("\n")[0]);
-            pathToDB = user.getPathToDB();
+            devUser.setPathToDB(scanner.nextLine().split("\n")[0]);
+            pathToDB = devUser.getPathToDB();
         }
-        return user;
+        return devUser;
     }
 
     private static String encrypt(String text) {
@@ -137,7 +137,7 @@ public class DevsLogin {
     }
 }
 
-class User {
+class DevUser {
     private String username;
     private String password;
     private String mac;
@@ -151,7 +151,7 @@ class User {
         this.pathToDB = pathToDB;
     }
 
-    public User(String username, String password) {
+    public DevUser(String username, String password) {
         this.username = username;
         this.password = password;
     }
@@ -180,7 +180,7 @@ class User {
         this.mac = mac;
     }
 
-    public User(String username, String password, String mac) {
+    public DevUser(String username, String password, String mac) {
         this.username = username;
         this.password = password;
         this.mac = mac;

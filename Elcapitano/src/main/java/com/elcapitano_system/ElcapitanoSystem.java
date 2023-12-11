@@ -15,6 +15,7 @@ public class ElcapitanoSystem {
     public static IncomeSheet incomeSheet;
     public static ExpensesSheet expensesSheet;
     public static Report report;
+    public static User user;
 
     public static void SystemLoad() throws IOException {
         {

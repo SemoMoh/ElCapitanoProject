@@ -1,30 +1,17 @@
 package com.example.elcapitano;
 
 import com.backend.accounts.AccountDB;
+import com.elcapitano_system.ElcapitanoSystem;
+import com.elcapitano_system.User;
 import com.feedback_windows.errorScreen;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.Objects;
-import java.util.ResourceBundle;
-import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
-
-
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
-
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 public class HelloController extends HelloApplication {
     public TextField usernameField;
@@ -93,7 +80,14 @@ public class HelloController extends HelloApplication {
     private void checkPassword() throws IOException {
         String username = usernameField.getText();
         String password = passwordField.getText();
-        boolean correctAccount = AccountDB.checkAccount(username,password);
+        boolean correctAccount = false;
+        try {
+            correctAccount = AccountDB.checkAccount(username, password);
+        } catch (IOException e) {
+            errorScreen.showAlert("Accounts Database not found exception.",
+                    "Please, return to the developments.");
+        }
+
         if (correctAccount) {
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("main_page.fxml"));
             fxmlLoader.setControllerFactory(c -> new HelloController());
@@ -106,13 +100,18 @@ public class HelloController extends HelloApplication {
             //newStage.setFullScreen(true);
             newStage.show();
 
+            // initialize the user.
+            ElcapitanoSystem.user = new User();
+            ElcapitanoSystem.user.username = username;
+            ElcapitanoSystem.user.password = password;
+            ElcapitanoSystem.user.isAdmin = AccountDB.getAccountType(username, password);
+            System.out.println(ElcapitanoSystem.user.isAdmin);
             // Close the current login stage
             Stage currentStage = (Stage) loginButton.getScene().getWindow();
             currentStage.close();
-        }
-        else {
+        } else {
 
-            new errorScreen().showAlert("Invalid Login","Invalid username or password");
+            new errorScreen().showAlert("Invalid Login", "Invalid username or password");
         }
     }
 
