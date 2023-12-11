@@ -37,6 +37,7 @@ public class SystemInit {
         //init accounts with one account added.
         AccountDB.dbPath = path;
         try {
+            AccountDB.getInstance();
             AccountDB.createDB();
         } catch (IOException e) {
             throw new RuntimeException("Can't create accounts database");

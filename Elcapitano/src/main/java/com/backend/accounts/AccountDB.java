@@ -54,7 +54,6 @@ public class AccountDB {
      */
     public static boolean createDB() throws IOException {
         File file = new File(dbPath + DB_NAME);
-        accounts = new ArrayList<>();
         if (!file.exists()) {
             boolean isCreated = file.createNewFile();
             if (isCreated) {
