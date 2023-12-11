@@ -16,6 +16,7 @@ public class AccountDB {
 
     private AccountDB(String d) {
         dbPath = d;
+        accounts = new ArrayList<>();
     }
 
     /**

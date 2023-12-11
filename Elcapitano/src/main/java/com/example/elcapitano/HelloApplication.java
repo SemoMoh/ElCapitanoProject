@@ -33,7 +33,7 @@ public class HelloApplication extends Application {
             stage.setResizable(false);
             stage.show();
         } else {
-            DB_path = DevsLogin.pathToDB + SystemInit.DB_name + "/";
+            DB_path = DevsLogin.pathToDB + SystemInit.DB_name;
 
             //System initialization.
             ElcapitanoSystem.SystemLoad();
