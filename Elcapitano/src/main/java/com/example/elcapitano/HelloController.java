@@ -8,6 +8,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
@@ -15,6 +17,37 @@ import java.io.IOException;
 
 public class HelloController extends HelloApplication {
     public TextField usernameField;
+
+
+    @FXML
+    private void initialize() {
+        if (usernameField != null) {
+            // Add an event handler to listen for Enter key press on the usernameField
+            usernameField.setOnKeyPressed(this::handleEnterKeyPress);
+        } else {
+            System.err.println("Error: usernameField is null in the initialize method.");
+        }
+
+        // Add an event handler to listen for Enter key press on the passwordField
+        if (passwordField != null) {
+            passwordField.setOnKeyPressed(this::handleEnterKeyPress);
+        } else {
+            System.err.println("Error: passwordField is null in the initialize method.");
+        }
+
+    }
+
+    // Event handler for Enter key press
+    private void handleEnterKeyPress(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            // Call the checkPassword function when Enter key is pressed
+            try {
+                checkPassword();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
 /*
     @FXML

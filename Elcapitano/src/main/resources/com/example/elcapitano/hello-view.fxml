@@ -19,9 +19,9 @@
     <children>
         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
             <children>
-                <ImageView fitHeight="187.0" fitWidth="182.0" pickOnBounds="true" preserveRatio="true">
+                <ImageView fitHeight="188.0" fitWidth="195.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../assets/levelsFc.jpg" />
+                  <Image url="@../../../assets/Levels%20Fc.png" />
                </image></ImageView>
             </children>
             <padding>

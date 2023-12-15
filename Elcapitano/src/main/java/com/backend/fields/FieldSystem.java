@@ -118,6 +118,11 @@ public class FieldSystem {
         return reservation;
     }
 
+    //Todo ya Eslam , to be used when cancelling and cancelling with returnAmount
+    public boolean deleteReservation(String fieldName, String date, int day, int hour, int retrunAmount) {
+        return true;
+    }
+
 
     public static void main(String[] args) {
         FieldSystem f = new FieldSystem(50, 100);

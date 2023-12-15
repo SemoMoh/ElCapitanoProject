@@ -10,9 +10,12 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import java.time.LocalTime;
+
 
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -72,6 +75,19 @@ public class AddMatches_controller implements Initializable {
         piadAmount.textProperty().addListener((observable, oldValue, newValue) -> {
             updatePriceFields();
         });
+
+        initializeFields();
+
+    }
+
+    private void  initializeFields (){
+        int spinnerInitialValue = 0;
+        SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, spinnerInitialValue);
+        noOfHours.setValueFactory(valueFactory);
+
+        // Initialize totalAmount to 0
+        totalAmount.setText("0");
+
     }
 
     @FXML
@@ -110,7 +126,7 @@ public class AddMatches_controller implements Initializable {
 
         }
         if (clickedButton.getStyle().contains("-fx-background-color: #4bdb6f;")) {
-            if (selectedButtonList.size() == 0) clearAllFieldsExceptChoosenButton();
+            if ((selectedButtonList.size() == 0) && isThereOrangeButon()) clearAllFieldsExceptChoosenButton();
             clearReservedIfSelected(buttonList);//for orange
             // Button is not highlighted, add the highlight
             clickedButton.setStyle("-fx-background-color: #5764f7;");
@@ -127,6 +143,14 @@ public class AddMatches_controller implements Initializable {
 
         }
     }
+
+    private boolean isThereOrangeButon(){
+        for (int i =0 ; i<buttonList.size() ; i++)
+        {            if (buttonList.get(i).getStyle().contains("-fx-background-color: orange;"))
+                return true;}
+        return false;
+    }
+
 
     private void clearAllFieldsExceptChoosenButton() {
         nameField.clear();
@@ -312,7 +336,20 @@ public class AddMatches_controller implements Initializable {
     public void confitmResetvations(ActionEvent actionEvent) {
         LocalDate date = chooseDate.getValue();
         int dayOfMonth = date.getDayOfMonth();
-        String mappedPitch = mapToFunctionParameter(choosePitch.getValue());
+
+
+
+        // Check if User choosed a pitch
+        String mappedPitch;
+        if (checkIfChoosePitch()) {
+             mappedPitch = mapToFunctionParameter(choosePitch.getValue());
+        }
+        else {
+            errorScreen.showAlert("تحديد غير صحيح", "يرجي اختيار ملعب");
+            return;
+        }
+
+
         String formattedDate = date.format(DateTimeFormatter.ofPattern("MM-yyyy"));
         int amountPaid = 0;
 
@@ -320,11 +357,13 @@ public class AddMatches_controller implements Initializable {
         int totalAmountValue = Integer.parseInt(totalAmount.getText());
         int paidAmountValue = piadAmount.getText().isEmpty() ? 0 : Integer.parseInt(piadAmount.getText());
 
-        if (paidAmountValue > totalAmountValue) {
-            errorScreen.showAlert("تحديد مبلغ غير صحيح", "لا يمكن للمبلغ المدفوع تجاوز المبلغ الإجمالي");
+
+        // if condition at line 371 does the same , initially it was if the paid more the total
+ /*       if ((paidAmountValue > totalAmountValue) && selectedButtonList.isEmpty()) {
+            errorScreen.showAlert("تحديد مواعيد غير صحيح", "رجاء اختيار بداية الحجز");
             return;
         }
-
+*/
         if (piadAmount.getText().isEmpty()) {
             errorScreen.showAlert("قيمة الحجز فارغة", " رجاء ادخال قيمة الحجز");
             return;
@@ -334,7 +373,24 @@ public class AddMatches_controller implements Initializable {
 
         int hour = -1;  // Initialize to an invalid value
         if (!selectedButtonList.isEmpty()) {
-            hour = extractButtonNumber(selectedButtonList.get(0).getId());
+            // Find the minimum hour from the selectedButtonList
+            hour = selectedButtonList.stream()
+                    .map(button -> extractButtonNumber(button.getId()))
+                    .min(Integer::compare)
+                    .orElse(-1);
+
+
+            //check if the hour and date has already passed
+            // Check if the selected date and time have already passed
+            if (!isDateTimeInFuture(date, hour)) {
+                errorScreen.showAlert("تحديد مواعيد غير صحيح", "لا يمكن حجز في تاريخ أو وقت قديم");
+                return;
+            }
+        }
+        else
+        {
+            errorScreen.showAlert("تحديد مواعيد غير صحيح", "رجاء اختيار مواعيد الحجز");
+            return;
         }
 
         int hoursNoToBeConfirmed = Math.max((int) noOfHours.getValueFactory().getValue(), selectedButtonList.size());
@@ -346,6 +402,7 @@ public class AddMatches_controller implements Initializable {
             Boolean confirmed = ElcapitanoSystem.fieldSystem.addReservation(mappedPitch, formattedDate, dayOfMonth, hour, hoursNoToBeConfirmed, amountPaid, nameField.getText(), phoneField.getText(), detailsField.getText());
             if (confirmed) {
                 clearAllFields();
+                updateSpinner(0);
             }
             else {
                 errorScreen.showAlert("تحديد مواعيد غير صحيح", "احد المواعيد غير متاحة");
@@ -354,6 +411,26 @@ public class AddMatches_controller implements Initializable {
         } else if (!isConsecutiveButtons(selectedButtonList)){
             errorScreen.showAlert("تحديد مواعيد غير صحيح", "يرجى اختيار اوقات متتالية");
         }
+
+    }
+    private boolean isDateTimeInFuture(LocalDate selectedDate, int selectedHour) {
+        // Combine the selected date and time into a LocalDateTime object
+        LocalDateTime selectedDateTime = LocalDateTime.of(selectedDate, LocalTime.of(selectedHour, 0));
+
+        // Get the current date and time
+        LocalDateTime currentDateTime = LocalDateTime.now();
+
+        // Check if the selected date and time are in the future
+        return selectedDateTime.isAfter(currentDateTime);
+    }
+
+
+    private boolean checkIfChoosePitch(){
+
+        if (choosePitch.getValue() !=null) {
+            return true;
+        }
+        return false;
 
     }
 
@@ -375,6 +452,7 @@ public class AddMatches_controller implements Initializable {
         phoneField.clear();
         piadAmount.clear();
         detailsField.clear();
+        remainingAmount.clear();
         searchReservations(new ActionEvent());
         // You can add more fields to clear as needed
     }
@@ -434,6 +512,9 @@ public class AddMatches_controller implements Initializable {
     private void handleSpinnerChange(Event event) {
         // Check if there are selected buttons
         if (!selectedButtonList.isEmpty()) {
+
+
+
             // Get the current value of the spinner
             int spinnerValue = (int) noOfHours.getValue();
 
@@ -445,40 +526,65 @@ public class AddMatches_controller implements Initializable {
 
             // Check if the spinner is incremented
             if (spinnerValue > selectedButtonList.size()) {
-                // Check if there is a next button in the list
-                if (lastIndex < buttonList.size() - 1) {
-                    // Get the next button
-                    Button nextButton = buttonList.get(lastIndex + 1);
-
-                    // Check if the next button is not reserved and not already selected
-                    if (!nextButton.getStyle().contains("-fx-background-color: red;") && !selectedButtonList.contains(nextButton)) {
-                        // Set the background color of the next button to blue
-                        nextButton.setStyle("-fx-background-color: #5764f7;");
-                        selectedButtonList.add(nextButton);
-                    } else {
-                        // Show an error screen if the next button is reserved or already selected
-                        errorScreen.showAlert("تحديد مواعيد غير صحيح", "لا يمكن إضافة المزيد من الأوقات، يرجى التحقق من التواريخ المحددة");
-                        // Reset the spinner value to the previous value
-                        noOfHours.decrement();
-                    }
-                } else {
-                  /*  // Show an error screen if there are not enough next buttons
-                    errorScreen.showAlert("تحديد مواعيد غير صحيح", "لا يمكن إضافة المزيد من الأوقات، يرجى التحقق من التواريخ المحددة");
-                    // Reset the spinner value to the previous value
-                    noOfHours.decrement();*/
-                }
+                // Increment scenario
+                incrementSpinner(spinnerValue, lastIndex);
             } else if (spinnerValue < selectedButtonList.size()) {
-                // Check if the spinner is decremented
-                // Remove the farthest selected button
-                int farthestIndex = lastIndex - spinnerValue + 1;
-                if (farthestIndex >= 0 && farthestIndex < selectedButtonList.size()) {
-                    Button farthestSelectedButton = selectedButtonList.get(farthestIndex);
-                    farthestSelectedButton.setStyle("-fx-background-color: #4bdb6f;");  // Reset color
-                    selectedButtonList.remove(farthestIndex);
-                }
+                // Decrement scenario
+                decrementSpinner(spinnerValue);
             } else {
                 // Spinner value is the same, do nothing
             }
+        } else {
+            errorScreen.showAlert("تحديد مواعيد غير صحيح", "يرجى اختيار مواعيد");
+            initializeFields();
         }
+    }
+
+    private void incrementSpinner(int spinnerValue, int lastIndex) {
+        // Check if there is a next button in the list
+        while (lastIndex < buttonList.size() - 1 && spinnerValue > selectedButtonList.size()) {
+            // Get the next button
+            Button nextButton = buttonList.get(lastIndex + 1);
+
+            // Check if the next button is not reserved and not already selected
+            if (!nextButton.getStyle().contains("-fx-background-color: red;") && !selectedButtonList.contains(nextButton)) {
+                // Set the background color of the next button to blue
+                nextButton.setStyle("-fx-background-color: #5764f7;");
+                selectedButtonList.add(nextButton);
+                updatePriceFields();
+            } else {
+                // Show an error screen if the next button is reserved or already selected
+                errorScreen.showAlert("تحديد مواعيد غير صحيح", "لا يمكن إضافة المزيد من الأوقات، يرجى التحقق من التواريخ المحددة");
+                // Reset the spinner value to the previous value
+                noOfHours.decrement();
+                break; // Break the loop if an error occurs
+            }
+
+            // Increment the index
+            lastIndex++;
+        }
+    }
+
+    private void decrementSpinner(int spinnerValue) {
+
+        updatePriceFields();
+
+        // Find the button with the highest hour
+        Button highestHourButton = selectedButtonList.stream()
+                .max(Comparator.comparingInt(button -> extractButtonNumber(button.getId())))
+                .orElse(null);
+
+        if (highestHourButton != null) {
+            // Deselect the button with the highest hour
+            highestHourButton.setStyle("-fx-background-color: #4bdb6f;");
+            selectedButtonList.remove(highestHourButton);
+            updatePriceFields();
+        }
+    }
+
+    public void cancelEverythingAndInitialize(ActionEvent actionEvent) {
+        searchReservations(new ActionEvent());
+        clearAllFields();
+        initializeFields();
     }
 }

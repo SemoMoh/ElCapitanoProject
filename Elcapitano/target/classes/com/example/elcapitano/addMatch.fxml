@@ -83,7 +83,7 @@
             <Button fx:id="button22" layoutX="428.0" layoutY="520.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="10:00 -- 11:00" AnchorPane.rightAnchor="170.39999999999998" />
             <Button fx:id="button23" layoutX="428.0" layoutY="554.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="11:00 -- 12:00" AnchorPane.rightAnchor="170.39999999999998" />
             <HBox alignment="CENTER" layoutX="1.0" layoutY="633.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="650.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-            <TextField fx:id="piadAmount" alignment="CENTER" layoutX="71.0" layoutY="301.0" AnchorPane.rightAnchor="500.0" onAction="#updatePriceFields"/>
+            <TextField fx:id="piadAmount" alignment="CENTER" layoutX="71.0" layoutY="301.0" onAction="#updatePriceFields" AnchorPane.rightAnchor="500.0" />
             <TextField fx:id="remainingAmount" alignment="CENTER" editable="false" layoutX="550.4" layoutY="361.0" AnchorPane.rightAnchor="500.0" />
             <Label layoutX="762.0" layoutY="191.0" text="الاسم" AnchorPane.rightAnchor="401.20000000000005">
                <font>
@@ -149,6 +149,11 @@
                   <Font name="System Bold" size="16.0" />
                </font>
             </Label>
+            <Button fx:id="cancelChoices" layoutX="672.0" layoutY="606.0" mnemonicParsing="false" onAction="#cancelEverythingAndInitialize" prefHeight="26.0" prefWidth="119.0" styleClass="button-15" stylesheets="@addMatch_style.css" text="الغاء الإختيار" AnchorPane.rightAnchor="408.8">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Button>
          </children>
       </AnchorPane>
    </children>

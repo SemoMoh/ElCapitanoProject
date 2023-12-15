@@ -1,8 +1,185 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
 
-
-<StackPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: b9c5a3;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.elcapitano.EditMatch_controller">
-
+<StackPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #c0cfed;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.elcapitano.EditMatch_controller">
+   <children>
+      <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" stylesheets="@addMatch_style.css">
+         <children>
+            <Button fx:id="cancelReservationButton" layoutX="356.0" layoutY="606.0" mnemonicParsing="false" onAction="#cancelReservations" prefHeight="26.0" prefWidth="119.0" styleClass="button-15" stylesheets="@addMatch_style.css" text="الغاء الحجز" AnchorPane.rightAnchor="724.8">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Button>
+            <Label alignment="TOP_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="42.0" prefWidth="650.0" text="تعديل الحجز" textAlignment="CENTER" textFill="#33355e" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <font>
+                  <Font name="Arial Narrow Bold" size="25.0" />
+               </font>
+               <padding>
+                  <Insets right="30.0" top="10.0" />
+               </padding>
+            </Label>
+            <TextField fx:id="nameField" alignment="CENTER" editable="false" layoutX="71.0" layoutY="191.0" AnchorPane.rightAnchor="500.0" />
+            <TextField fx:id="phoneField" alignment="CENTER" editable="false" layoutX="71.0" layoutY="247.0" AnchorPane.rightAnchor="500.0" />
+            <HBox alignment="CENTER" layoutY="56.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="650.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+               <children>
+                  <DatePicker fx:id="chooseDate" onHiding="#searchReservations" prefHeight="35.0" prefWidth="186.0" promptText="اختار اليوم               " />
+                  <ChoiceBox fx:id="choosePitch" onMouseReleased="#searchReservations" prefHeight="37.0" prefWidth="130.0">
+                     <items>
+                        <FXCollections fx:factory="observableArrayList">
+                           <String fx:value="ملعب 1" />
+                           <String fx:value="ملعب 2-1" />
+                           <String fx:value="ملعب 2-2" />
+                           <String fx:value="ملعب 2-3" />
+                           <String fx:value="ملعب 2 9x9" />
+                        </FXCollections>
+                     </items>
+                     <HBox.margin>
+                        <Insets left="50.0" />
+                     </HBox.margin>
+                  </ChoiceBox>
+                  <Label text="اختار ملعب:   ">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </HBox>
+            <Button fx:id="button00" layoutX="538.0" layoutY="178.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="12:00 -- 01:00" AnchorPane.rightAnchor="60.39999999999998" />
+            <Button fx:id="button01" layoutX="538.0" layoutY="210.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="01:00 -- 02:00" AnchorPane.rightAnchor="60.39999999999998" />
+            <Button fx:id="button02" layoutX="538.0" layoutY="243.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="02:00 -- 03:00" AnchorPane.rightAnchor="60.39999999999998" />
+            <Button fx:id="button03" layoutX="538.0" layoutY="277.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="03:00 -- 04:00" AnchorPane.rightAnchor="60.39999999999998" />
+            <Button fx:id="button04" layoutX="538.0" layoutY="314.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="04:00 -- 05:00" AnchorPane.rightAnchor="60.39999999999998" />
+            <Button fx:id="button05" layoutX="538.0" layoutY="348.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="05:00 -- 06:00" AnchorPane.rightAnchor="60.39999999999998" />
+            <Button fx:id="button06" layoutX="538.0" layoutY="384.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="06:00 -- 07:00" AnchorPane.rightAnchor="60.39999999999998" />
+            <Button fx:id="button07" layoutX="538.0" layoutY="416.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="07:00 -- 08:00" AnchorPane.rightAnchor="60.39999999999998" />
+            <Button fx:id="button08" layoutX="538.0" layoutY="449.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="08:00 -- 09:00" AnchorPane.rightAnchor="60.39999999999998" />
+            <Button fx:id="button09" layoutX="538.0" layoutY="483.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="09:00 -- 10:00" AnchorPane.rightAnchor="60.39999999999998" />
+            <Button fx:id="button10" layoutX="538.0" layoutY="520.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="10:00 -- 11:00" AnchorPane.rightAnchor="60.39999999999998" />
+            <Button fx:id="button11" layoutX="538.0" layoutY="554.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="11:00 -- 12:00" AnchorPane.rightAnchor="60.39999999999998" />
+            <Button fx:id="button12" layoutX="428.0" layoutY="178.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="12:00 -- 01:00" AnchorPane.rightAnchor="170.39999999999998" />
+            <Button fx:id="button13" layoutX="428.0" layoutY="210.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="01:00 -- 02:00" AnchorPane.rightAnchor="170.39999999999998" />
+            <Button fx:id="button14" layoutX="428.0" layoutY="243.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="02:00 -- 03:00" AnchorPane.rightAnchor="170.39999999999998" />
+            <Button fx:id="button15" layoutX="428.0" layoutY="277.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="03:00 -- 04:00" AnchorPane.rightAnchor="170.39999999999998" />
+            <Button fx:id="button16" layoutX="428.0" layoutY="314.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="04:00 -- 05:00" AnchorPane.rightAnchor="170.39999999999998" />
+            <Button fx:id="button17" layoutX="428.0" layoutY="348.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="05:00 -- 06:00" AnchorPane.rightAnchor="170.39999999999998" />
+            <Button fx:id="button18" layoutX="428.0" layoutY="384.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="06:00 -- 07:00" AnchorPane.rightAnchor="170.39999999999998" />
+            <Button fx:id="button19" layoutX="428.0" layoutY="416.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="07:00 -- 08:00" AnchorPane.rightAnchor="170.39999999999998" />
+            <Button fx:id="button20" layoutX="428.0" layoutY="449.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="08:00 -- 09:00" AnchorPane.rightAnchor="170.39999999999998" />
+            <Button fx:id="button21" layoutX="428.0" layoutY="483.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="09:00 -- 10:00" AnchorPane.rightAnchor="170.39999999999998" />
+            <Button fx:id="button22" layoutX="428.0" layoutY="520.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="10:00 -- 11:00" AnchorPane.rightAnchor="170.39999999999998" />
+            <Button fx:id="button23" layoutX="428.0" layoutY="554.0" mnemonicParsing="false" onAction="#handleButtonClick" style="-fx-background-color: #4bdb6f" text="11:00 -- 12:00" AnchorPane.rightAnchor="170.39999999999998" />
+            <HBox alignment="CENTER" layoutX="1.0" layoutY="633.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="650.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+            <TextField fx:id="piadAmount" alignment="CENTER" editable="false" layoutX="549.0" layoutY="348.0" onAction="#updatePriceFields" AnchorPane.rightAnchor="501.4" />
+            <TextField fx:id="remainingAmount" alignment="CENTER" editable="false" layoutX="550.0" layoutY="399.0" AnchorPane.rightAnchor="500.4" />
+            <Label layoutX="762.0" layoutY="191.0" text="الاسم" AnchorPane.rightAnchor="401.20000000000005">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+            <Label layoutX="732.0" layoutY="247.0" text="رقم الموبيل" AnchorPane.rightAnchor="392.0">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+            <Label layoutX="714.0" layoutY="348.0" text="المدفوع مسبقا" AnchorPane.rightAnchor="389.20000000000005">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+            <Label layoutX="714.0" layoutY="399.0" text="المبلغ المتبقي" AnchorPane.rightAnchor="391.6">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+            <CheckBox layoutX="416.0" layoutY="454.0" mnemonicParsing="false" text="اضف خصم" AnchorPane.rightAnchor="678.4">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </CheckBox>
+            <Label layoutX="351.0" layoutY="195.0" text="عدد الساعات" AnchorPane.rightAnchor="764.2">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+            <Label layoutX="354.0" layoutY="251.0" text="قيمة الساعة" AnchorPane.rightAnchor="766.0">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+            <TextField fx:id="hourPrice" alignment="CENTER" editable="false" layoutX="165.0" layoutY="251.0" prefHeight="26.0" prefWidth="59.0" AnchorPane.rightAnchor="858.0" />
+            <TextArea fx:id="detailsField" editable="false" layoutX="14.0" layoutY="223.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="200.0" prefWidth="200.0" promptText="ملاحظات" AnchorPane.rightAnchor="986.0" />
+            <Label layoutX="69.0" layoutY="194.0" text="اضف ملاحظات" AnchorPane.rightAnchor="1042.2">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <Button fx:id="completeReservationButton" layoutX="550.0" layoutY="606.0" mnemonicParsing="false" onAction="#completeReservation" prefHeight="26.0" prefWidth="119.0" styleClass="button-15" stylesheets="@addMatch_style.css" text="اكمال الدفع" AnchorPane.rightAnchor="530.8">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Button>
+            <TextField fx:id="totalAmount" alignment="CENTER" layoutX="550.0" layoutY="454.0" AnchorPane.rightAnchor="500.4" />
+            <Label layoutX="714.0" layoutY="454.0" text="المبلغ الاجمالي" AnchorPane.rightAnchor="387.6">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+            <Spinner fx:id="noOfHours" disable="true" layoutX="282.0" layoutY="197.0" prefHeight="26.0" prefWidth="59.0" AnchorPane.rightAnchor="858.8" />
+            <Label layoutX="971.0" layoutY="151.0" text="مساءً" AnchorPane.rightAnchor="195.4">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+            <Label layoutX="1075.0" layoutY="151.0" text="صباحًا" AnchorPane.rightAnchor="85.8">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+            <Button fx:id="cancelChoices" layoutX="752.0" layoutY="606.0" mnemonicParsing="false" onAction="#cancelEverythingAndInitialize" prefHeight="26.0" prefWidth="119.0" styleClass="button-15" stylesheets="@addMatch_style.css" text="الغاء الإختيار" AnchorPane.rightAnchor="328.79999999999995">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Button>
+            <TextField fx:id="piadAmountNow" alignment="CENTER" layoutX="549.0" layoutY="301.0" onAction="#updatePriceFields" AnchorPane.rightAnchor="501.4" />
+            <Label layoutX="714.0" layoutY="301.0" text="المبلغ المدفوع" AnchorPane.rightAnchor="390.0">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+            <Button fx:id="cancelAndReturnMoney" layoutX="154.0" layoutY="606.0" mnemonicParsing="false" onAction="#cancelReservationsAndReturnMoneyBack" prefHeight="26.0" prefWidth="119.0" styleClass="button-15" stylesheets="@addMatch_style.css" text="الغاء واسترداد" AnchorPane.rightAnchor="926.8">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Button>
+            <HBox alignment="CENTER" layoutX="475.20001220703125" layoutY="108.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+               <children>
+                  <TextField alignment="CENTER" promptText="ادخل رقم الموبيل" />
+                  <Label text="بحث ">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+         </children>
+      </AnchorPane>
+   </children>
 </StackPane>
